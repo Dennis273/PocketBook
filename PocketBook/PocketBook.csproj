@@ -98,8 +98,11 @@
     <Compile Include="DailyView.xaml.cs">
       <DependentUpon>DailyView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DetailView.xaml.cs">
-      <DependentUpon>DetailView.xaml</DependentUpon>
+    <Compile Include="DetailDayView.xaml.cs">
+      <DependentUpon>DetailDayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DetailMonthView.xaml.cs">
+      <DependentUpon>DetailMonthView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -111,6 +114,9 @@
       <DependentUpon>Overview.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WelcomePage.xaml.cs">
+      <DependentUpon>WelcomePage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -137,7 +143,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DetailView.xaml">
+    <Page Include="DetailDayView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DetailMonthView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -150,6 +160,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Overview.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WelcomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
