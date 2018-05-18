@@ -20,9 +20,9 @@ namespace PocketBook
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class Overview : Page
+    public sealed partial class MonthlyView : Page
     {
-        public Overview()
+        public MonthlyView()
         {
             this.InitializeComponent();
         }
