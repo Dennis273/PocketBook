@@ -16,7 +16,6 @@
             <NavigationViewItem Icon="CalendarDay" Content="月视图" Tag="DailyView" />
             <NavigationViewItem Icon="Calendar" Content="年视图" Tag="MonthlyView" />
         </NavigationView.MenuItems>
-        <Frame x:Name="contentFrame">
-        </Frame>
+        <Frame x:Name="contentFrame"/>
     </NavigationView>
 </Page>

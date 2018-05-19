@@ -37,7 +37,6 @@ namespace PocketBook
             {
                 contentFrame.Navigate(typeof(Setting));
             }
-
             switch(item.Tag)
             {
                 case "Today":
@@ -53,14 +52,17 @@ namespace PocketBook
                     contentFrame.Navigate(typeof(MonthlyView));
                     break;
                 default:
-                    return;
+                    break;
             }
+            view.Header = item.Content.ToString();
 
         }
 
         private void NavigationView_Loaded(object sender, RoutedEventArgs e)
         {
+            var view = sender as NavigationView;
             contentFrame.Navigate(typeof(Overview));
+            view.Header = "概览";
         }
     }
 }
