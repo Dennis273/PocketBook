@@ -11,6 +11,12 @@ namespace PocketBook
         public float Money { get; set; }
         public DateTime SpendDate { get; set; }
         public string Catagory { get; set; }
+        public DataEntry(float money, DateTime spendDate, string catagory)
+        {
+            Money = money;
+            SpendDate = spendDate;
+            Catagory = catagory;
+        }
     }
     
     class CatagoryHandler
@@ -20,11 +26,8 @@ namespace PocketBook
         {
             Catagories = new List<string>();
         }
-        public string GetCatagory(string s)
-        {
-            if (Catagories.Contains(s)) return s;
-            return "";
-        }
+
+        // Check if s exist in Catagories
         static public CatagoryHandler GetCatagoryHandler()
         {
             if (m == null)

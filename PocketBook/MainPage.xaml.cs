@@ -26,5 +26,41 @@ namespace PocketBook
         {
             this.InitializeComponent();
         }
+
+
+        private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        {
+            var view = sender as NavigationView;
+            var item = args.SelectedItem as NavigationViewItem;
+
+            if (item.Content.ToString() == "设置")
+            {
+                contentFrame.Navigate(typeof(Setting));
+            }
+
+            switch(item.Tag)
+            {
+                case "Today":
+                    contentFrame.Navigate(typeof(DetailDayView));
+                    break;
+                case "Overview":
+                    contentFrame.Navigate(typeof(Overview));
+                    break;
+                case "DailyView":
+                    contentFrame.Navigate(typeof(DailyView));
+                    break;
+                case "MonthlyView":
+                    contentFrame.Navigate(typeof(MonthlyView));
+                    break;
+                default:
+                    return;
+            }
+
+        }
+
+        private void NavigationView_Loaded(object sender, RoutedEventArgs e)
+        {
+            contentFrame.Navigate(typeof(Overview));
+        }
     }
 }

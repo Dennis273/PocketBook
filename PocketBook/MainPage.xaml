@@ -7,13 +7,14 @@
     mc:Ignorable="d">
 
     <NavigationView Loaded="NavigationView_Loaded" Margin="0,12,0,0" Grid.Row="1" SelectionChanged="NavigationView_SelectionChanged"
-x:Name="nvSample"
-Header="This is header text.">
+        IsSettingsVisible="True"
+        CompactModeThresholdWidth="1920" ExpandedModeThresholdWidth="1920"
+        >
         <NavigationView.MenuItems>
-            <NavigationViewItem Icon="Play" Content="Menu Item1" Tag="SamplePage1" />
-            <NavigationViewItemSeparator/>
-            <NavigationViewItem Icon="Save" Content="Menu Item2" Tag="SamplePage2" />
-            <NavigationViewItem Icon="Refresh" Content="Menu Item3" Tag="SamplePage3" />
+            <NavigationViewItem Icon="Play" Content="概览" Tag="Overview" />
+            <NavigationViewItem Icon="Emoji2" Content="今天" Tag="Today" />
+            <NavigationViewItem Icon="CalendarDay" Content="月视图" Tag="DailyView" />
+            <NavigationViewItem Icon="Calendar" Content="年视图" Tag="MonthlyView" />
         </NavigationView.MenuItems>
         <Frame x:Name="contentFrame">
         </Frame>
