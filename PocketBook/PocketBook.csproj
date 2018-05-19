@@ -98,6 +98,7 @@
     <Compile Include="DailyView.xaml.cs">
       <DependentUpon>DailyView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataEntry.cs" />
     <Compile Include="DetailDayView.xaml.cs">
       <DependentUpon>DetailDayView.xaml</DependentUpon>
     </Compile>
