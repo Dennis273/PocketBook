@@ -95,31 +95,31 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DailyView.xaml.cs">
+    <Compile Include="View\DailyView.xaml.cs">
       <DependentUpon>DailyView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DataEntry.cs" />
-    <Compile Include="DetailDayView.xaml.cs">
+    <Compile Include="DataStructure.cs" />
+    <Compile Include="View\DetailDayView.xaml.cs">
       <DependentUpon>DetailDayView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DetailMonthView.xaml.cs">
+    <Compile Include="View\DetailMonthView.xaml.cs">
       <DependentUpon>DetailMonthView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs.cs" />
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="DialogManager.cs" />
+    <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MonthlyView.xaml.cs">
+    <Compile Include="View\MonthlyView.xaml.cs">
       <DependentUpon>MonthlyView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Overview.xaml.cs">
+    <Compile Include="View\Overview.xaml.cs">
       <DependentUpon>Overview.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Setting.xaml.cs">
+    <Compile Include="View\Setting.xaml.cs">
       <DependentUpon>Setting.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WelcomePage.xaml.cs">
+    <Compile Include="View\WelcomePage.xaml.cs">
       <DependentUpon>WelcomePage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -144,35 +144,35 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="DailyView.xaml">
+    <Page Include="View\DailyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DetailDayView.xaml">
+    <Page Include="View\DetailDayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DetailMonthView.xaml">
+    <Page Include="View\DetailMonthView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainPage.xaml">
+    <Page Include="View\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MonthlyView.xaml">
+    <Page Include="View\MonthlyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Overview.xaml">
+    <Page Include="View\Overview.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Setting.xaml">
+    <Page Include="View\Setting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WelcomePage.xaml">
+    <Page Include="View\WelcomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

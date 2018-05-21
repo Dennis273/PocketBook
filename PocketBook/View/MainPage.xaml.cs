@@ -40,7 +40,7 @@ namespace PocketBook
             switch(item.Tag)
             {
                 case "Today":
-                    contentFrame.Navigate(typeof(DetailDayView));
+                    contentFrame.Navigate(typeof(DetailDayView), DateTime.Now.Date);
                     break;
                 case "Overview":
                     contentFrame.Navigate(typeof(Overview));

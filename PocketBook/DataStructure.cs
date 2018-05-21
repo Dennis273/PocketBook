@@ -38,4 +38,25 @@ namespace PocketBook
         }
         static private CatagoryHandler m;
     }
+    
+    public class DayData
+    {
+        int Day;
+        float Money;
+        public DayData(int day, int money)
+        {
+            Day = day;
+            Money = money;
+        }
+    }
+    public class MonthData
+    {
+        public int Month;
+        public float Money;
+        public MonthData(int month, int money)
+        {
+            Month = month;
+            Money = money;
+        }
+    }
 }

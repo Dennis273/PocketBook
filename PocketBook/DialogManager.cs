@@ -50,6 +50,22 @@ namespace PocketBook
                 return null;
             }
         }
+        public static async Task<bool> ShowConfirmDialog(string message = "您确定要执行此操作？", string description = "")
+        {
+            var dialog = new ContentDialog
+            {
+                Title = message,
+                Content = description,
+                PrimaryButtonText = "确定",
+                SecondaryButtonText = "取消"
+            };
+            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+            {
+                return true;
+            }
+            else return false;
+        }
+
         private static ComboBox GetComboBox()
         {
             // get catagory from provider

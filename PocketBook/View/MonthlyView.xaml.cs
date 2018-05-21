@@ -22,9 +22,26 @@ namespace PocketBook
     /// </summary>
     public sealed partial class MonthlyView : Page
     {
+        List<MonthData> MonthList;
         public MonthlyView()
         {
             this.InitializeComponent();
+            MonthList = new List<MonthData>();
+            // get month data from provider;
+            
+            // dummy data below
+            for (int i = 1; i <= 12; i++)
+            {
+                MonthList.Add(new MonthData(i, i * 100));
+            }
         }
+        private void OnGridViewSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            // Here I'm calculating the number of columns I want based on
+            // the width of the page
+            var columns = Math.Ceiling(ActualWidth / 300);
+            ((ItemsWrapGrid)gridView.ItemsPanelRoot).ItemWidth = e.NewSize.Width / columns;
+        }
+
     }
 }

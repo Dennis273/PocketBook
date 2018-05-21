@@ -1,0 +1,44 @@
+﻿<Page
+    x:Class="PocketBook.MonthlyView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PocketBook"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="8*"/>
+        </Grid.RowDefinitions>
+        <Grid Margin="50, 0, 50, 0" Grid.Row="0">
+            <TextBlock Text="2018年" FontSize="48" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            <DatePicker YearVisible="True" MonthVisible="False" DayVisible="False" HorizontalAlignment="Right"/>
+        </Grid>
+        <ScrollViewer Margin="40, 20, 40, 20" Grid.Row="1" HorizontalAlignment="Stretch">
+            <GridView ItemsSource="{x:Bind MonthList, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  x:Name="gridView" SizeChanged="OnGridViewSizeChanged">
+                <GridView.ItemContainerStyle>
+                    <Style TargetType="GridViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Margin" Value="0"/>
+                    </Style>
+                </GridView.ItemContainerStyle>
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="local:MonthData">
+                        <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <TextBlock Text="{x:Bind Month, Mode=OneWay}"/>
+                            <TextBlock Text="{x:Bind Money, Mode=OneWay}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid MaximumRowsOrColumns="4" Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+            </GridView>
+        </ScrollViewer>
+    </Grid>
+</Page>

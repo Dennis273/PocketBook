@@ -23,7 +23,7 @@ namespace PocketBook
     public sealed partial class DetailDayView : Page
     {
         public List<DataEntry> dataEntries;
-
+        public DateTime Date;
         public DetailDayView()
         {
             this.InitializeComponent();
@@ -32,6 +32,7 @@ namespace PocketBook
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            Date = (DateTime)e.Parameter;
             dataEntries = GetDataEntries();
         }
 
