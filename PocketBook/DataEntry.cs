@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PocketBook
 {
-    class DataEntry
+    public class DataEntry
     {
         public float Money { get; set; }
         public DateTime SpendDate { get; set; }
@@ -18,8 +18,8 @@ namespace PocketBook
             Catagory = catagory;
         }
     }
-    
-    class CatagoryHandler
+
+    public class CatagoryHandler
     {
         public List<string> Catagories;
         private CatagoryHandler()

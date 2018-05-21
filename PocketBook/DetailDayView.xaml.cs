@@ -22,9 +22,39 @@ namespace PocketBook
     /// </summary>
     public sealed partial class DetailDayView : Page
     {
+        public List<DataEntry> dataEntries;
+
         public DetailDayView()
         {
             this.InitializeComponent();
+            // Add delegate to provider
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            dataEntries = GetDataEntries();
+        }
+
+        private List<DataEntry> GetDataEntries()
+        {
+            return null;
+        }
+
+        private async void Add_Button_Click(object sender, RoutedEventArgs e)
+        {
+            // show dialog to obtain user input
+            // add entry to provider
+            var entry = await DialogManager.ShowNewEntryDialog();
+        }
+
+
+        public void OnEntryListChanged()
+        {
+
+        }
+        public void OnDataChanged()
+        {
+
         }
     }
 }

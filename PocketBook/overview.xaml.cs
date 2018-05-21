@@ -26,5 +26,21 @@ namespace PocketBook
         {
             this.InitializeComponent();
         }
+        public string Summary
+        {
+            get
+            {
+                return "今天是" + DateTime.Now.Year + "年" + DateTime.Now.Month + "月" + DateTime.Now.Day + "日, " +
+                        "您本月已消费" + GetSpentMoney().ToString() + "元, 平均每日剩余" + GetAvgLeftMoney().ToString() + "元。";
+            }
+        }
+        private float GetSpentMoney()
+        {
+            return 700;
+        }
+        private float GetAvgLeftMoney()
+        {
+            return 60;
+        }
     }
 }

@@ -12,12 +12,9 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="8*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <TextBlock Text="概览" FontSize="64" Margin="50, 0, 0, 0" VerticalAlignment="Center"/>
-        </Grid>
         <Grid Grid.Row="1">
             <StackPanel Margin="60, 20, 60, 20">
-                <TextBlock Text="今天是5月18日，您本月已消费700元，平均每日剩余60元" FontSize="48"/>
+                <TextBlock Text="{x:Bind Summary, Mode=OneWay}" FontSize="48" TextWrapping="Wrap"/>
             </StackPanel>
         </Grid>
         
