@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -53,22 +54,23 @@ namespace PocketBook
         {
             // show dialog to obtain user input
             // add entry to provider
-            var entry = await CustomDialog.ShowNewEntryDialog();
+            var c = new List<string> { "sss", "vvv", "ccc" };
+            var entry = await CustomDialog.ShowNewEntryDialog(c);
         }
 
 
         public void OnEntryListChanged()
         {
-
         }
         public void OnDataChanged()
         {
 
         }
 
-        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
+        private async void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            
+            var dataEntry = e.ClickedItem as DataEntry;
+            var opt = await CustomDialog.ShowDetailDataEntry(dataEntry);
         }
     }
 }

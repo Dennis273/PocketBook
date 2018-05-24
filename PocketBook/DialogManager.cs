@@ -78,7 +78,7 @@ namespace PocketBook
             panel.Children.Add(dateInput);
             return this;
         }
-        public async Task<List<Object>> ShowDialog()
+        public async Task<List<Object>> ShowInputDialog()
         {
             if (await dialog.ShowAsync() == ContentDialogResult.Primary)
             {
@@ -92,17 +92,20 @@ namespace PocketBook
             }
             return null;
         }
-        public static async Task<DataEntry> ShowNewEntryDialog()
+        public async Task<ContentDialogResult> ShowDialog()
+        {
+            return await dialog.ShowAsync();
+        }
+        public static async Task<DataEntry> ShowNewEntryDialog(List<string> catagories)
         {
             var d = new CustomDialog("新增条目");
-            List<string> l = new List<string>
-            {
-                "food",
-                "drinks"
-            };
-            d.AddTextInput("金额").AddDateInput("日期").AddComboBox("类别", l).AddTwinButtons("确定", "取消");
-            var list = await d.ShowDialog();
-            return null;
+            d.AddTextInput("金额").AddDateInput("日期").AddComboBox("类别", catagories).AddTwinButtons("确定", "取消");
+            var list = await d.ShowInputDialog();
+            var t = list[0] as TextBox;
+            var j = list[1] as CalendarDatePicker;
+            var k = list[2] as ComboBox;
+            if (t == null || j == null || k == null) return null;
+            return new DataEntry(float.Parse(t.Text), j.Date.Value.Date, (string)k.SelectedValue);
         }
         public static async Task<bool> ShowConfirmDialog(string message = "您确定要执行此操作？", string description = "")
         {
@@ -194,6 +197,19 @@ namespace PocketBook
             {
                 return 0;
             }
+        }
+        public static async Task<int> ShowDetailDataEntry(DataEntry item)
+        {
+            var dialog = new CustomDialog("详细信息");
+            dialog.AddMessage($"金额: {item.Money}");
+            dialog.AddMessage($"日期: {item.SpendDate.ToShortDateString()}");
+            dialog.AddMessage($"类别: {item.Catagory}");
+            dialog.AddTwinButtons("返回", "删除");
+            var result = await dialog.ShowDialog();
+            if (result == ContentDialogResult.Primary) return 0;
+            if (result == ContentDialogResult.Secondary) return 1;
+            return -1;
+           
         }
         private static ComboBox GetComboBox()
         {
