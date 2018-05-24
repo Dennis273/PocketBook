@@ -22,6 +22,8 @@ namespace PocketBook
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        DataProvider provider = DataProvider.GetDataProvider();
+
         public MainPage()
         {
             this.InitializeComponent();

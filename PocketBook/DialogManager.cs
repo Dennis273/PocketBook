@@ -9,46 +9,100 @@ using Windows.UI.Xaml.Controls;
 
 namespace PocketBook
 {
-    static class DialogManager
+    class CustomDialog
     {
-        public static async Task<DataEntry> ShowNewEntryDialog()
+        private ContentDialog dialog;
+        public CustomDialog(string title)
         {
-            var combobox = GetComboBox();
-            var amounInput = new TextBox
+            dialog = new ContentDialog
             {
-                Header = "金额"
+                Title = title,
+                Content = new StackPanel()
             };
-            var dateInput = new CalendarDatePicker
+        }
+        public CustomDialog AddMessage(string message)
+        {
+            var panel = dialog.Content as StackPanel;
+            var text = new TextBlock
             {
-                Date = DateTime.Now.Date,
-                Header = "日期"
+                Margin = new Thickness(0, 10, 0, 10),
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Text = message
             };
-            var panel = new StackPanel();
-            amounInput.Margin = new Thickness(0, 10, 0, 10);
-            dateInput.Margin = new Thickness(0, 10, 0, 10);
-            combobox.Margin = new Thickness(0, 10, 0, 10);
-            amounInput.HorizontalAlignment = HorizontalAlignment.Stretch;
-            dateInput.HorizontalAlignment = HorizontalAlignment.Stretch;
-            combobox.HorizontalAlignment = HorizontalAlignment.Stretch;
-            panel.Children.Add(amounInput);
-            panel.Children.Add(dateInput);
+            panel.Children.Add(text);
+            return this;
+        }
+        public CustomDialog AddTextInput(string header)
+        {
+            var panel = dialog.Content as StackPanel;
+            var text = new TextBox
+            {
+                Margin = new Thickness(0, 10, 0, 10),
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Header = header
+            };
+            panel.Children.Add(text);
+            return this;
+        }
+        public CustomDialog AddComboBox(string header, List<string> options)
+        {
+            var combobox = new ComboBox
+            {
+                Margin = new Thickness(0, 10, 0, 10),
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Header = header
+            };
+            foreach (var option in options)
+            {
+                combobox.Items.Add(option);
+            }
+            var panel = dialog.Content as StackPanel;
             panel.Children.Add(combobox);
-
-            var dialog = new ContentDialog
+            return this;
+        }
+        public CustomDialog AddTwinButtons(string primary, string secondary)
+        {
+            dialog.PrimaryButtonText = primary;
+            dialog.SecondaryButtonText = secondary;
+            return this;
+        }
+        public CustomDialog AddDateInput(string header)
+        {
+            var dateInput = new DatePicker
             {
-                Content = panel,
-                Title = "新增条目",
-                PrimaryButtonText = "确定",
-                SecondaryButtonText = "取消"
+                Header = header,
+                YearVisible = false,
+                MonthVisible = false,
             };
+            var panel = dialog.Content as Panel;
+            panel.Children.Add(dateInput);
+            return this;
+        }
+        public async Task<List<Object>> ShowDialog()
+        {
             if (await dialog.ShowAsync() == ContentDialogResult.Primary)
             {
-                return new DataEntry(float.Parse(amounInput.Text, CultureInfo.InvariantCulture.NumberFormat), dateInput.Date.Value.DateTime, (string)combobox.SelectedValue);
+                List<Object> a = new List<object>();
+                var panel = dialog.Content as StackPanel;
+                foreach(var i in panel.Children)
+                {
+                    a.Add(i);
+                }
+                return a;
             }
-            else
+            return null;
+        }
+        public static async Task<DataEntry> ShowNewEntryDialog()
+        {
+            var d = new CustomDialog("新增条目");
+            List<string> l = new List<string>
             {
-                return null;
-            }
+                "food",
+                "drinks"
+            };
+            d.AddTextInput("金额").AddDateInput("日期").AddComboBox("类别", l).AddTwinButtons("确定", "取消");
+            var list = await d.ShowDialog();
+            return null;
         }
         public static async Task<bool> ShowConfirmDialog(string message = "您确定要执行此操作？", string description = "")
         {
@@ -65,7 +119,82 @@ namespace PocketBook
             }
             else return false;
         }
-
+        public static async Task<string> ShowUsernameDialog()
+        {
+            var textInput = new TextBox
+            {
+                Header = "用户名"
+            };
+            var dialog = new ContentDialog
+            {
+                Content = textInput,
+                Title = "修改用户名",
+                PrimaryButtonText = "确定",
+                SecondaryButtonText = "取消"
+            };
+            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+            {
+                return textInput.Text;
+            }
+            else
+            {
+                return "";
+            }
+        }
+        public static async Task<float> ShowBudgetDialog()
+        {
+            var textInput = new TextBox
+            {
+                Header = "月预算"
+            };
+            var dialog = new ContentDialog
+            {
+                Content = textInput,
+                Title = "修改月预算",
+                PrimaryButtonText = "确定",
+                SecondaryButtonText = "取消"
+            };
+            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+            {
+                // some logic
+                try
+                {
+                    return float.Parse(textInput.Text);
+                }
+                catch (Exception e)
+                {
+                    return -1;
+                }
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        public static async Task<int> ShowRenewDateDialog()
+        {
+            var dateInput = new DatePicker
+            {
+                Header = "更新日",
+                YearVisible = false,
+                MonthVisible = false,
+            };
+            var dialog = new ContentDialog
+            {
+                Content = dateInput,
+                Title = "修改修改更新日",
+                PrimaryButtonText = "确定",
+                SecondaryButtonText = "取消"
+            };
+            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+            {
+                return dateInput.Date.Day;
+            }
+            else
+            {
+                return 0;
+            }
+        }
         private static ComboBox GetComboBox()
         {
             // get catagory from provider

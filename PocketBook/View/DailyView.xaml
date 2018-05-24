@@ -13,7 +13,7 @@
             <RowDefinition Height="8*"/>
         </Grid.RowDefinitions>
         <Grid Margin="50, 0, 50, 0" Grid.Row="0">
-            <TextBlock Text="2018年5月" FontSize="64" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            <TextBlock Text="2018年5月" FontSize="48" VerticalAlignment="Center" HorizontalAlignment="Left"/>
             <DatePicker YearVisible="True" DayVisible="False" HorizontalAlignment="Right"/>
         </Grid>
         <ScrollViewer Margin="40, 20, 40, 20" Grid.Row="1">

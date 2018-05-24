@@ -13,7 +13,7 @@
             <RowDefinition Height="8*"/>
         </Grid.RowDefinitions>
         <Grid Margin="50, 0, 50, 0" Grid.Row="0">
-            <TextBlock Text="2018年5月12日" FontSize="64" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            <TextBlock Text="{x:Bind Header}" FontSize="48" VerticalAlignment="Center" HorizontalAlignment="Left"/>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -27,8 +27,12 @@
                 </Grid.RowDefinitions>
                 <Button Content="新记录" Grid.Row="0" HorizontalAlignment="Center" Margin="20, 20, 20, 20" Click="Add_Button_Click"/>
                 <ScrollViewer Grid.Row="1">
-                    <ListView>
-
+                    <ListView ItemsSource="{x:Bind dataEntries, Mode=OneWay}" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="local:DataEntry">
+                                <TextBlock Text="{x:Bind Money}" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
                     </ListView>
                 </ScrollViewer>
             </Grid>

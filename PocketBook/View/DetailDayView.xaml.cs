@@ -22,8 +22,16 @@ namespace PocketBook
     /// </summary>
     public sealed partial class DetailDayView : Page
     {
+        private DataProvider provider = DataProvider.GetDataProvider();
         public List<DataEntry> dataEntries;
         public DateTime Date;
+        public String Header
+        {
+            get
+            {
+                return $"{Date.Year}年{Date.Month}月{Date.Day}日";
+            }
+        }
         public DetailDayView()
         {
             this.InitializeComponent();
@@ -38,14 +46,14 @@ namespace PocketBook
 
         private List<DataEntry> GetDataEntries()
         {
-            return null;
+            return provider.GetDayDataEntry(Date.Year, Date.Month, Date.Day);
         }
 
         private async void Add_Button_Click(object sender, RoutedEventArgs e)
         {
             // show dialog to obtain user input
             // add entry to provider
-            var entry = await DialogManager.ShowNewEntryDialog();
+            var entry = await CustomDialog.ShowNewEntryDialog();
         }
 
 
@@ -56,6 +64,11 @@ namespace PocketBook
         public void OnDataChanged()
         {
 
+        }
+
+        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            
         }
     }
 }
