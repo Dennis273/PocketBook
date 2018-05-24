@@ -1,17 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -44,7 +34,7 @@ namespace PocketBook
             base.OnNavigatedTo(e);
             Date = (DateTime)e.Parameter;
             dataEntries = GetDataEntries();
-            provider.DataChangedHandlers += OnEntryListChanged;
+            provider.DataChanged += OnEntryListChanged;
         }
 
         private List<DataEntry> GetDataEntries()
@@ -57,12 +47,12 @@ namespace PocketBook
             // show dialog to obtain user input
             // add entry to provider
 
-            var entry = await CustomDialog.ShowNewEntryDialog();
-            provider.AddDataEntry();
+
+
 
             var c = new List<string> { "sss", "vvv", "ccc" };
             var entry = await CustomDialog.ShowNewEntryDialog(c);
-
+            provider.AddDataEntry(new DataEntry(10, DateTime.Now, "sss"));
         }
 
 

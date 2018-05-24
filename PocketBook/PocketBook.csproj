@@ -95,6 +95,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataBase.cs" />
     <Compile Include="DataProvider.cs" />
     <Compile Include="View\DailyView.xaml.cs">
       <DependentUpon>DailyView.xaml</DependentUpon>
