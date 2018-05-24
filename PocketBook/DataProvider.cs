@@ -1,23 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PocketBook
 {
+    public enum DataOperation { Add, Remove, Update };
+
     class DataProvider
     {
-        
+
+        private List<DataEntry> dataEntries;
+
+        public delegate void DataChangedHandler(DataOperation dataOpration, DataEntry dataEntry);
+
+        public event DataChangedHandler DataChanged;
+
+
         public static DataProvider GetDataProvider()
         {
             if (instance == null) instance = new DataProvider();
             return instance;
         }
         private static DataProvider instance;
+
         private DataProvider()
         {
-
+            dataEntries = DataBase.GetAllEntries();
         }
         public List<MonthData> GetMonthDataOfYear(int year)
         {
@@ -48,6 +55,11 @@ namespace PocketBook
                 list.Add(new DataEntry(10, DateTime.Now, "food"));
             }
             return list;
+        }
+
+        internal void AddDataEntry()
+        {
+            DataChanged(DataOperation.Add, new DataEntry(10, DateTime.Now, "food"));
         }
     }
 }

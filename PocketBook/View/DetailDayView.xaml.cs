@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace PocketBook
 {
+
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
@@ -42,6 +43,7 @@ namespace PocketBook
             base.OnNavigatedTo(e);
             Date = (DateTime)e.Parameter;
             dataEntries = GetDataEntries();
+            provider.DataChangedHandlers += OnEntryListChanged;
         }
 
         private List<DataEntry> GetDataEntries()
@@ -54,13 +56,15 @@ namespace PocketBook
             // show dialog to obtain user input
             // add entry to provider
             var entry = await CustomDialog.ShowNewEntryDialog();
+            provider.AddDataEntry();
         }
 
 
-        public void OnEntryListChanged()
+        public void OnEntryListChanged(DataOperation dataOpration, DataEntry dataEntry)
         {
-
+           
         }
+
         public void OnDataChanged()
         {
 
