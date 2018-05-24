@@ -68,7 +68,6 @@ namespace PocketBook
 
         public void OnEntryListChanged(DataOperation dataOpration, DataEntry dataEntry)
         {
-
         }
 
         public void OnDataChanged()
