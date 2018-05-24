@@ -12,24 +12,24 @@ namespace PocketBook
         public DateTime SpendDate { get; set; }
         public string Catagory { get; set; }
         public string Comment { get; set; }
+        public string id;
         public DataEntry(float money, DateTime spendDate, string catagory)
         {
             Money = money;
             SpendDate = spendDate;
             Catagory = catagory;
+            id = DateTime.Now.ToLongTimeString();
         }
     }
     
     public class DayData
     {
-        string id;
-        int Day;
-        float Money;
+        public int Day;
+        public float Money;
         public DayData(int day, int money)
         {
             Day = day;
             Money = money;
-            id = DateTime.Now.ToLongTimeString();
         }
     }
     public class MonthData
