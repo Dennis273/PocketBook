@@ -1,11 +1,5 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -52,6 +46,10 @@ namespace PocketBook
         {
             // show dialog to obtain user input
             // add entry to provider
+
+
+
+
             var c = new List<string> { "sss", "vvv", "ccc" };
             var entry = await CustomDialog.ShowNewEntryDialog(c);
             provider.AddDataEntry(new DataEntry(10, DateTime.Now, "sss"));

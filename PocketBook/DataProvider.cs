@@ -8,6 +8,7 @@ namespace PocketBook
     class DataProvider
     {
         private List<DataEntry> dataEntries;
+        private List<string> catagories;
 
         public delegate void DataChangedHandler(DataOperation dataOpration, DataEntry dataEntry);
 
@@ -23,8 +24,20 @@ namespace PocketBook
 
         private DataProvider()
         {
-            DataBase.InitializeDateBase();
-            dataEntries = DataBase.GetAllEntries();
+            try
+            {
+                DataBase.InitializeDateBase();
+                dataEntries = DataBase.GetAllEntries();
+                catagories = DataBase.GetCatagories();
+                GetPercentageAmongMonth(2018, 5);
+                AddCatagory("drink");
+                ChangeCatagory("abc", "food");
+                ChangeCatagory("fff");
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.ToString());
+            }
         }
 
         public List<MonthData> GetMonthDataOfYear(int year)
@@ -74,7 +87,7 @@ namespace PocketBook
                     list[entry.SpendDate.Day - 1].Money += entry.Money;
                 }
             }
-        
+
             return list;
         }
 
@@ -93,8 +106,29 @@ namespace PocketBook
             return list;
         }
 
-        internal void  AddDataEntry(DataEntry dataEntry)
-        {   
+        public Dictionary<string, float> GetPercentageAmongMonth(int year, int month)
+        {
+            // implement here
+            var map = new Dictionary<string, float>();
+            foreach (string catagory in catagories)
+            {
+                map.Add(catagory, 0.0f);
+            }
+            foreach (DataEntry entry in dataEntries)
+            {
+                if (entry.SpendDate.Month == month && entry.SpendDate.Year == year)
+                {
+                    map[entry.Catagory] += entry.Money;
+                }
+
+            }
+            return map;
+        }
+
+
+
+        internal void AddDataEntry(DataEntry dataEntry)
+        {
             try
             {
                 DataBase.InsertEntry(dataEntry);
@@ -143,5 +177,52 @@ namespace PocketBook
                 Console.Error.WriteLine(err.ToString());
             }
         }
+
+        internal void AddCatagory(string catagory)
+        {
+            try
+            {
+                string newCatagories = "";
+                foreach (string temp in catagories)
+                {
+                    newCatagories += temp + ";";
+                }
+                if (!newCatagories.Contains(catagory))
+                {
+                    newCatagories += catagory + ";";
+                    DataBase.UpdateCatagory(newCatagories);
+                    catagories.Add(catagory);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.ToString());
+            }
+        }
+
+        internal void ChangeCatagory(string oldCatagory, string newCatagory = "未定义")
+        {
+            try
+            {
+                if (catagories.Contains(oldCatagory))
+                {
+                    var newCatagories = "";
+                    foreach (string temp in catagories)
+                    {
+                        newCatagories += temp + ";";
+                    }
+                    newCatagories = newCatagories.Replace(oldCatagory + ";", "");
+                    DataBase.UpdateCatagory(newCatagories);
+                    catagories.Remove(oldCatagory);
+                    DataBase.UpdateDataEntryCatagory(oldCatagory, newCatagory);
+                    AddCatagory(newCatagory);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.ToString());
+            }
+        }
+
     }
 }

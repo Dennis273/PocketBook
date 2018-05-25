@@ -85,5 +85,43 @@ namespace PocketBook
                 statement.Step();
             }
         }
+
+        public static List<string> GetCatagories()
+        {
+            List<string> temp = new List<string>();
+            using (var statement = connection.Prepare(
+                "SELECT Catagories FROM " + $"{USER_SETTING_TABLE };"))
+            {
+                while (SQLiteResult.ROW == statement.Step())
+                {
+                    var catagories = (string)statement["Catagories"];
+                    var strs = catagories.Split(";", StringSplitOptions.RemoveEmptyEntries);
+                    temp = new List<string>(strs);
+                }
+            }
+            
+            return temp;
+        }
+
+        public static void UpdateCatagory(string catagorys)
+        {
+            using (var statement = connection.Prepare(
+              "UPDATE " + USER_SETTING_TABLE + " SET Catagories = ?"))
+            {
+                statement.Bind(1, catagorys);
+                statement.Step();
+            }
+        }
+
+        public static void UpdateDataEntryCatagory(string oldCatagory, string newCatagory)
+        {
+            using (var statement = connection.Prepare(
+             "UPDATE " + TABLE_NAME + " SET Catagory = ? WHERE Catagory = ?"))
+            {
+                statement.Bind(1, newCatagory);
+                statement.Bind(2, oldCatagory);
+                statement.Step();
+            }
+        }
     }
 }
