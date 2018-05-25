@@ -7,19 +7,18 @@ namespace PocketBook
 
     class DataProvider
     {
-
         private List<DataEntry> dataEntries;
 
         public delegate void DataChangedHandler(DataOperation dataOpration, DataEntry dataEntry);
 
         public event DataChangedHandler DataChanged;
 
-
         public static DataProvider GetDataProvider()
         {
             if (instance == null) instance = new DataProvider();
             return instance;
         }
+
         private static DataProvider instance;
 
         private DataProvider()
@@ -78,6 +77,7 @@ namespace PocketBook
         
             return list;
         }
+
         public List<DataEntry> GetDayDataEntry(int year, int month, int day)
         {
             // implement here

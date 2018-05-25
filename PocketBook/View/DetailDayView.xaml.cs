@@ -55,12 +55,12 @@ namespace PocketBook
             var c = new List<string> { "sss", "vvv", "ccc" };
             var entry = await CustomDialog.ShowNewEntryDialog(c);
             provider.AddDataEntry(new DataEntry(10, DateTime.Now, "sss"));
-
         }
 
 
         public void OnEntryListChanged(DataOperation dataOpration, DataEntry dataEntry)
         {
+
         }
 
         public void OnDataChanged()
