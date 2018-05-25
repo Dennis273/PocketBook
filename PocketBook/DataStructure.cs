@@ -12,7 +12,9 @@ namespace PocketBook
         public DateTime SpendDate { get; set; }
         public string Catagory { get; set; }
         public string Comment { get; set; }
+
         public string Id;
+
         public DataEntry(float money, DateTime spendDate, string catagory, string id = "")
         {
             Money = money;
