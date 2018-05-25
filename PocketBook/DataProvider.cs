@@ -114,7 +114,7 @@ namespace PocketBook
                 DataBase.UpdateEntry(dataEntry);
                 foreach (DataEntry entry in dataEntries)
                 {
-                    if (entry.id == dataEntry.id)
+                    if (entry.Id == dataEntry.Id)
                     {
                         entry.Money = dataEntry.Money;
                         entry.Catagory = dataEntry.Catagory;
@@ -134,7 +134,7 @@ namespace PocketBook
         {
             try
             {
-                DataBase.DeleteEntry(dataEntry.id);
+                DataBase.DeleteEntry(dataEntry.Id);
                 dataEntries.Remove(dataEntry);
                 DataChanged(DataOperation.Remove, dataEntry);
             }
