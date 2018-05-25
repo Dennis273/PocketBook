@@ -13,7 +13,7 @@ namespace PocketBook
         private static String SQL_UPDATE_USER = "UPDATE " + USER_SETTING_TABLE+ " SET Username = ?, Budget = ?, RenewDate = ?, Catagory = ?";
 
         private static String TABLE_NAME = "DataEntryTable";
-        private static String SQL_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (Id TEXT PRIMARY KEY, Day INTEGER, Month TEXT, Year TEXT, Money FLOAT, Catagory TEXT);";
+        private static String SQL_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (Id TEXT PRIMARY KEY, Day INTEGER, Month INTEGER, Year INTEGER, Money FLOAT, Catagory TEXT);";
         private static String SQL_INSERT = "INSERT INTO " + TABLE_NAME + " VALUES(?,?,?,?,?,?);";
         private static String SQL_UPDATE = "UPDATE " + TABLE_NAME + " SET Day = ?, Month = ?, Year = ?, Money = ?, Catagory = ?  WHERE Id = ?";
         private static String SQL_DELETE = "DELETE FROM " + TABLE_NAME + " WHERE Id = ?";
@@ -38,7 +38,7 @@ namespace PocketBook
             using (var statement = connection.Prepare(
               SQL_INSERT))
             {
-                statement.Bind(1, dataEntry.id);
+                statement.Bind(1, dataEntry.Id);
                 statement.Bind(2, dataEntry.SpendDate.Day);
                 statement.Bind(3, dataEntry.SpendDate.Month);
                 statement.Bind(4, dataEntry.SpendDate.Year);
@@ -58,9 +58,9 @@ namespace PocketBook
                 while (SQLiteResult.ROW == statement.Step())
                 {
                     var id = (string)statement["Id"];
-                    var money = (float)statement["Money"];
+                    var money = (float)(Double)statement["Money"];
                     var catagory = (string)statement["Catagory"];
-                    var spendDate = new DateTime((int)statement["Year"], (int)statement["Month"], (int)statement["Day"]);
+                    var spendDate = new DateTime((int)(Int64)statement["Year"], (int)(Int64)statement["Month"], (int)(Int64)statement["Day"]);
                     temp.Add(new DataEntry(money, spendDate, catagory, id));
                 }
             }
@@ -77,7 +77,7 @@ namespace PocketBook
                 statement.Bind(3, dataEntry.SpendDate.Year);
                 statement.Bind(4, dataEntry.Money);
                 statement.Bind(5, dataEntry.Catagory);
-                statement.Bind(7, dataEntry.id);
+                statement.Bind(7, dataEntry.Id);
                 statement.Step();
             }
         }
