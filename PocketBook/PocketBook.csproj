@@ -95,6 +95,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataBase.cs" />
     <Compile Include="DataProvider.cs" />
     <Compile Include="View\DailyView.xaml.cs">
       <DependentUpon>DailyView.xaml</DependentUpon>
@@ -182,6 +183,14 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.0.8</Version>
     </PackageReference>
+    <PackageReference Include="SQLitePCL">
+      <Version>3.8.7.2</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="SQLite.UWP.2015, Version=3.23.1">
+      <Name>SQLite for Universal Windows Platform</Name>
+    </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

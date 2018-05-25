@@ -13,12 +13,14 @@ namespace PocketBook
         public string Catagory { get; set; }
         public string Comment { get; set; }
         public string id;
-        public DataEntry(float money, DateTime spendDate, string catagory)
+
+        public DataEntry(float money, DateTime spendDate, string catagory, string id = "")
         {
             Money = money;
             SpendDate = spendDate;
             Catagory = catagory;
-            id = DateTime.Now.ToLongTimeString();
+            id = id == "" ? Guid.NewGuid().ToString() : id;
+
         }
     }
     
@@ -26,7 +28,7 @@ namespace PocketBook
     {
         public int Day;
         public float Money;
-        public DayData(int day, int money)
+        public DayData(int day, float money)
         {
             Day = day;
             Money = money;
@@ -36,7 +38,7 @@ namespace PocketBook
     {
         public int Month;
         public float Money;
-        public MonthData(int month, int money)
+        public MonthData(int month, float money)
         {
             Month = month;
             Money = money;
