@@ -22,17 +22,23 @@ namespace PocketBook
     /// </summary>
     public sealed partial class MonthlyView : Page
     {
+        DataProvider provider;
         List<MonthData> MonthList;
+        public int Year;
         public MonthlyView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+            provider = DataProvider.GetDataProvider();
             MonthList = new List<MonthData>();
-            // get month data from provider;
-            
-            // dummy data below
-            for (int i = 1; i <= 12; i++)
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            Year = (int)e.Parameter;
+            MonthList.Clear();
+            foreach(var data in provider.GetMonthDataOfYear(Year))
             {
-                MonthList.Add(new MonthData(i, i * 100));
+                MonthList.Add(data);
             }
         }
         private void OnGridViewSizeChanged(object sender, SizeChangedEventArgs e)

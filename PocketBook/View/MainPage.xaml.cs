@@ -51,7 +51,7 @@ namespace PocketBook
                     contentFrame.Navigate(typeof(DailyView));
                     break;
                 case "MonthlyView":
-                    contentFrame.Navigate(typeof(MonthlyView));
+                    contentFrame.Navigate(typeof(MonthlyView), DateTime.Now.Year);
                     break;
                 default:
                     break;

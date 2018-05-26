@@ -173,7 +173,7 @@ namespace PocketBook
         {
             try
             {
-                DataBase.UpdateUser(userSetting);
+                DataBase.UpdateUserSetting(userSetting);
                 this.userSetting.Username = userSetting.Username;
                 this.userSetting.RenewDate = userSetting.RenewDate;
                 this.userSetting.Budget = userSetting.Budget;
@@ -230,7 +230,7 @@ namespace PocketBook
                     newCatagories = newCatagories.Replace(oldCatagory + ";", "");
                     DataBase.UpdateCatagory(newCatagories);
                     userSetting.Catagories.Remove(oldCatagory);
-                    DataBase.UpdateDataEntryCatagory(oldCatagory, newCatagory);
+                    DataBase.UpdateEntryCatagory(oldCatagory, newCatagory);
                     AddCatagory(newCatagory);
                 }
             }

@@ -115,7 +115,7 @@ namespace PocketBook
             }
         }
 
-        public static void UpdateDataEntryCatagory(string oldCatagory, string newCatagory)
+        public static void UpdateEntryCatagory(string oldCatagory, string newCatagory)
         {
             using (var statement = connection.Prepare(
              "UPDATE " + TABLE_NAME + " SET Catagory = ? WHERE Catagory = ?"))
@@ -126,7 +126,7 @@ namespace PocketBook
             }
         }
 
-        public static void UpdateUser(UserSetting userSetting)
+        public static void UpdateUserSetting(UserSetting userSetting)
         {
             using (var statement = connection.Prepare(
              "UPDATE " + USER_SETTING_TABLE + " SET Username = ?, RenewDate = ?, Budget = ?"))

@@ -26,44 +26,38 @@ namespace PocketBook
         }
         public DetailDayView()
         {
-            this.InitializeComponent();
-            // Add delegate to provider
+            InitializeComponent();
+            provider.DataChanged += OnEntryListChanged;
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             Date = (DateTime)e.Parameter;
-            dataEntries = GetDataEntries();
+            dataEntries = provider.GetDayDataEntry(Date.Year, Date.Month, Date.Day);
             provider.DataChanged += OnEntryListChanged;
-        }
-
-        private List<DataEntry> GetDataEntries()
-        {
-            return provider.GetDayDataEntry(Date.Year, Date.Month, Date.Day);
         }
 
         private async void Add_Button_Click(object sender, RoutedEventArgs e)
         {
-            // show dialog to obtain user input
-            // add entry to provider
-
-
-
-
-            var c = new List<string> { "sss", "vvv", "ccc" };
-            var entry = await CustomDialog.ShowNewEntryDialog(c);
-            provider.AddDataEntry(new DataEntry(10, DateTime.Now, "sss"));
+            var entry = await CustomDialog.ShowNewEntryDialog(provider.GetCatagories());
+            if (entry != null) provider.AddDataEntry(entry);
         }
 
-
-        public void OnEntryListChanged(DataOperation dataOpration, DataEntry dataEntry)
+        public void OnEntryListChanged(DataOperation operation, DataEntry dataEntry)
         {
-
-        }
-
-        public void OnDataChanged()
-        {
-
+            if (operation == DataOperation.Add)
+            {
+                dataEntries.Add(dataEntry);
+            }
+            if (operation == DataOperation.Remove)
+            {
+                dataEntries.Remove(dataEntry);
+            }
+            if (operation == DataOperation.Update)
+            {
+                var e = dataEntries.Find(entry => dataEntry.Id == entry.Id);
+                e = dataEntry;
+            }
         }
 
         private async void ListView_ItemClick(object sender, ItemClickEventArgs e)
