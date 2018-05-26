@@ -9,7 +9,6 @@ namespace PocketBook
         private static String DB_NAME = "DataEntry.db";
         private static String USER_SETTING_TABLE = "UserSetting";
         private static String SQL_CREATE_USER_TABLE = "CREATE TABLE IF NOT EXISTS " + USER_SETTING_TABLE + " (Username TEXT PRIMARY KEY, Budget FLOAT, RenewDate INTEGER, Catagories TEXT);";
-        private static String SQL_UPDATE_USER = "UPDATE " + USER_SETTING_TABLE+ " SET Username = ?, Budget = ?, RenewDate = ?, Catagory = ?";
         private static String TABLE_NAME = "DataEntryTable";
         private static String SQL_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (Id TEXT PRIMARY KEY, Day INTEGER, Month INTEGER, Year INTEGER, Money FLOAT, Catagory TEXT);";
         private static String SQL_INSERT = "INSERT INTO " + TABLE_NAME + " VALUES(?,?,?,?,?,?);";
@@ -86,21 +85,24 @@ namespace PocketBook
             }
         }
 
-        public static List<string> GetCatagories()
+        public static UserSetting GetUserSetting()
         {
-            List<string> temp = new List<string>();
+            UserSetting userSetting = new UserSetting();
             using (var statement = connection.Prepare(
-                "SELECT Catagories FROM " + $"{USER_SETTING_TABLE };"))
+                "SELECT * FROM " + $"{USER_SETTING_TABLE };"))
             {
                 while (SQLiteResult.ROW == statement.Step())
                 {
                     var catagories = (string)statement["Catagories"];
                     var strs = catagories.Split(";", StringSplitOptions.RemoveEmptyEntries);
-                    temp = new List<string>(strs);
+                    var temp = new List<string>(strs);
+                    var username = (string)statement["Username"];
+                    var renewDate = (int)(Int64)statement["RenewDate"];
+                    var budget = (float)(Double)statement["Budget"];
+                    userSetting = new UserSetting(username, renewDate, budget, temp);
                 }
             }
-            
-            return temp;
+            return userSetting;
         }
 
         public static void UpdateCatagory(string catagorys)
@@ -122,6 +124,37 @@ namespace PocketBook
                 statement.Bind(2, oldCatagory);
                 statement.Step();
             }
+        }
+
+        public static void UpdateUser(UserSetting userSetting)
+        {
+            using (var statement = connection.Prepare(
+             "UPDATE " + USER_SETTING_TABLE + " SET Username = ?, RenewDate = ?, Budget = ?"))
+            {
+                statement.Bind(1, userSetting.Username);
+                statement.Bind(2, userSetting.RenewDate);
+                statement.Bind(3, userSetting.Budget);
+                statement.Step();
+            }
+        }
+
+        internal static void __DeleteAllData()
+        {
+            using (var statement = connection.Prepare(
+                   "DELETE FROM " + TABLE_NAME))
+            {
+                statement.Step();
+            }
+            using (var statement = connection.Prepare(
+             "UPDATE " + USER_SETTING_TABLE + " SET Username = ?, RenewDate = ?, Budget = ?, Catagories = ?"))
+            {
+                statement.Bind(1, "未命名");
+                statement.Bind(2, 1);
+                statement.Bind(3, 1);
+                statement.Bind(4, "未定义");
+                statement.Step();
+            }
+
         }
     }
 }

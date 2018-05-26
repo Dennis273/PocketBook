@@ -44,4 +44,19 @@ namespace PocketBook
             Money = money;
         }
     }
+
+    public class UserSetting
+    {
+        public string Username;
+        public int RenewDate;
+        public float Budget;
+        public List<string> Catagories;
+        public UserSetting(string username = "", int renewDate = 1, float budget = 1, List<string> catagories = null)
+        {
+            Username = username;
+            RenewDate = renewDate;
+            Budget = budget;
+            Catagories = catagories;
+        }
+    }
 }

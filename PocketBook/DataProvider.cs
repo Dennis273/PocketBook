@@ -8,7 +8,7 @@ namespace PocketBook
     class DataProvider
     {
         private List<DataEntry> dataEntries;
-        private List<string> catagories;
+        private UserSetting userSetting;
 
         public delegate void DataChangedHandler(DataOperation dataOpration, DataEntry dataEntry);
 
@@ -28,11 +28,7 @@ namespace PocketBook
             {
                 DataBase.InitializeDateBase();
                 dataEntries = DataBase.GetAllEntries();
-                catagories = DataBase.GetCatagories();
-                GetPercentageAmongMonth(2018, 5);
-                AddCatagory("drink");
-                ChangeCatagory("abc", "food");
-                ChangeCatagory("fff");
+                userSetting = DataBase.GetUserSetting();
             }
             catch (Exception e)
             {
@@ -50,7 +46,6 @@ namespace PocketBook
                 list.Add(new MonthData(i, 0));
             }
 
-
             foreach (DataEntry entry in dataEntries)
             {
                 if (entry.SpendDate.Year == year)
@@ -58,7 +53,6 @@ namespace PocketBook
                     list[entry.SpendDate.Month - 1].Money += entry.Money;
                 }
             }
-
             return list;
         }
 
@@ -87,7 +81,6 @@ namespace PocketBook
                     list[entry.SpendDate.Day - 1].Money += entry.Money;
                 }
             }
-
             return list;
         }
 
@@ -101,7 +94,6 @@ namespace PocketBook
                 {
                     list.Add(entry);
                 }
-
             }
             return list;
         }
@@ -110,7 +102,7 @@ namespace PocketBook
         {
             // implement here
             var map = new Dictionary<string, float>();
-            foreach (string catagory in catagories)
+            foreach (string catagory in userSetting.Catagories)
             {
                 map.Add(catagory, 0.0f);
             }
@@ -120,7 +112,6 @@ namespace PocketBook
                 {
                     map[entry.Catagory] += entry.Money;
                 }
-
             }
             return map;
         }
@@ -178,12 +169,37 @@ namespace PocketBook
             }
         }
 
+        internal void SetUserSetting(UserSetting userSetting)
+        {
+            try
+            {
+                DataBase.UpdateUser(userSetting);
+                this.userSetting.Username = userSetting.Username;
+                this.userSetting.RenewDate = userSetting.RenewDate;
+                this.userSetting.Budget = userSetting.Budget;
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.ToString());
+            }
+        }
+
+        public UserSetting GetUserSetting()
+        {
+            return userSetting;
+        }
+
+        internal List<string> GetCatagories()
+        {
+            return userSetting.Catagories;
+        }
+
         internal void AddCatagory(string catagory)
         {
             try
             {
                 string newCatagories = "";
-                foreach (string temp in catagories)
+                foreach (string temp in userSetting.Catagories)
                 {
                     newCatagories += temp + ";";
                 }
@@ -191,7 +207,7 @@ namespace PocketBook
                 {
                     newCatagories += catagory + ";";
                     DataBase.UpdateCatagory(newCatagories);
-                    catagories.Add(catagory);
+                    userSetting.Catagories.Add(catagory);
                 }
             }
             catch (Exception e)
@@ -204,16 +220,16 @@ namespace PocketBook
         {
             try
             {
-                if (catagories.Contains(oldCatagory))
+                if (userSetting.Catagories.Contains(oldCatagory))
                 {
                     var newCatagories = "";
-                    foreach (string temp in catagories)
+                    foreach (string temp in userSetting.Catagories)
                     {
                         newCatagories += temp + ";";
                     }
                     newCatagories = newCatagories.Replace(oldCatagory + ";", "");
                     DataBase.UpdateCatagory(newCatagories);
-                    catagories.Remove(oldCatagory);
+                    userSetting.Catagories.Remove(oldCatagory);
                     DataBase.UpdateDataEntryCatagory(oldCatagory, newCatagory);
                     AddCatagory(newCatagory);
                 }
@@ -224,5 +240,16 @@ namespace PocketBook
             }
         }
 
+        internal void __DeleteAll()
+        {
+            try
+            {
+                DataBase.__DeleteAllData();
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.ToString());
+            }
+        }
     }
 }
