@@ -10,7 +10,7 @@ namespace PocketBook
         private List<DataEntry> dataEntries;
         private UserSetting userSetting;
 
-        public delegate void DataChangedHandler(DataOperation dataOpration, DataEntry dataEntry);
+        public delegate void DataChangedHandler(DataOperation dataOperation, DataEntry dataEntry);
 
         public event DataChangedHandler DataChanged;
 
@@ -29,6 +29,11 @@ namespace PocketBook
                 DataBase.InitializeDateBase();
                 dataEntries = DataBase.GetAllEntries();
                 userSetting = DataBase.GetUserSetting();
+                if (userSetting.Catagories == null)
+                {
+                    DataBase.InitializeUserSetting();
+                    userSetting = DataBase.GetUserSetting();
+                }
             }
             catch (Exception e)
             {

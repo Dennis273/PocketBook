@@ -15,6 +15,18 @@ namespace PocketBook
         private static String SQL_UPDATE = "UPDATE " + TABLE_NAME + " SET Day = ?, Month = ?, Year = ?, Money = ?, Catagory = ?  WHERE Id = ?";
         private static String SQL_DELETE = "DELETE FROM " + TABLE_NAME + " WHERE Id = ?";
 
+        internal static void InitializeUserSetting()
+        {
+            using (var statement = connection.Prepare("INSERT INTO " + USER_SETTING_TABLE + " VALUES(?,?,?,?);"))
+            {
+                statement.Bind(1, "未命名");
+                statement.Bind(2, 1);
+                statement.Bind(3, 1);
+                statement.Bind(4, "未定义");
+                statement.Step();
+            }
+        }
+
         private static SQLiteConnection connection = new SQLiteConnection(DB_NAME);
 
         public static void InitializeDateBase()
