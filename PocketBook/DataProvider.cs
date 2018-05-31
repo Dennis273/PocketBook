@@ -9,6 +9,8 @@ namespace PocketBook
     {
         private List<DataEntry> dataEntries;
         private UserSetting userSetting;
+        private MonthData currentMonth;
+        private DayData todayData;
 
         public delegate void DataChangedHandler(DataOperation dataOperation, DataEntry dataEntry);
 
@@ -34,11 +36,26 @@ namespace PocketBook
                     DataBase.InitializeUserSetting();
                     userSetting = DataBase.GetUserSetting();
                 }
+                currentMonth = GetMonthDataOfYear(DateTime.Now.Year)[DateTime.Now.Month - 1];
+                todayData = GetDayDataOfMonth(DateTime.Now.Year, DateTime.Now.Month)[DateTime.Now.Day - 1];
+                UpdateTile();
             }
             catch (Exception e)
             {
                 Console.Error.WriteLine(e.ToString());
             }
+        }
+
+        private void UpdateTile()
+        {
+            //if (userSetting.Budget * 0.5 < currentMonth.Money)
+            //{
+            //    Tile.TileNotificate(userSetting.Budget, currentMonth.Money, userSetting.Budget / currentMonth.Money);
+            //} else if (todayData.Money > (userSetting.Budget - currentMonth.Money) / (float)DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month))
+            //{
+            //    Tile.TileNotificate(todayData.Money, userSetting.Budget);
+            //}
+            Tile.TileNotificate(todayData.Money, (float)DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
         }
 
         public List<MonthData> GetMonthDataOfYear(int year)
