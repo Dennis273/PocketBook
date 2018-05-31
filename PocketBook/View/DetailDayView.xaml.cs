@@ -120,7 +120,7 @@ namespace PocketBook
             DataRequest request = args.Request;
             DataRequestDeferral deferal = request.GetDeferral();
             request.Data.Properties.Title = "消费记录";
-            //设置共享内容(必须)
+            //设置共享内容
             request.Data.SetText($"消费金额：{data.Money}元\n类别：{data.Catagory}\n备注：{data.Comment}");
             deferal.Complete();
         }
