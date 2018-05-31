@@ -59,6 +59,7 @@ namespace PocketBook
 
         public void OnEntryListChanged(DataOperation operation, DataEntry dataEntry)
         {
+            if (dataEntry.SpendDate != Date) return;
             switch (operation)
             {
                 case DataOperation.Add:
