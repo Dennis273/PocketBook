@@ -13,8 +13,13 @@
             <RowDefinition Height="8*"/>
         </Grid.RowDefinitions>
         <Grid Margin="50, 0, 50, 0" Grid.Row="0">
-            <TextBlock Text="2018年5月" FontSize="48" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-            <DatePicker YearVisible="True" DayVisible="False" HorizontalAlignment="Right"/>
+            <StackPanel Orientation="Horizontal" Grid.Column="0">
+                <TextBlock Text="{x:Bind Year}"  FontSize="48"/>
+                <TextBlock Text="年"  FontSize="48"/>
+                <TextBlock Text="{x:Bind Month}"  FontSize="48"/>
+                <TextBlock Text="月"  FontSize="48"/>
+            </StackPanel>
+            <DatePicker x:Name="datePicker" YearVisible="True" DayVisible="False" HorizontalAlignment="Right" DateChanged="DatePicker_DateChanged"/>
         </Grid>
         <Pivot Grid.Row="1">
             <PivotItem Header="每日">

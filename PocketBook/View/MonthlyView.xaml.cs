@@ -36,7 +36,8 @@ namespace PocketBook
             base.OnNavigatedTo(e);
             Year = (int)e.Parameter;
             MonthList.Clear();
-            foreach(var data in provider.GetMonthDataOfYear(Year))
+            datePicker.Date = new DateTime(Year, 1, 1);
+            foreach (var data in provider.GetMonthDataOfYear(Year))
             {
                 MonthList.Add(data);
             }
@@ -52,8 +53,20 @@ namespace PocketBook
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var monthData = e.ClickedItem as MonthData;
+            var date = new DateTime(Year, monthData.Month, 1);
+            if (date > DateTime.Now) return;
             int[] arg = { Year, monthData.Month };
             this.Frame.Navigate(typeof(DailyView), arg);
+        }
+
+        private void DatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs e)
+        {
+            var picker = sender as DatePicker;
+            if (e.NewDate <= DateTime.Now)
+            {
+                this.Frame.Navigate(typeof(MonthlyView), e.NewDate.Year);
+            }
+            else picker.Date = e.OldDate;
         }
     }
 }

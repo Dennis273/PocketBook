@@ -36,6 +36,7 @@ namespace PocketBook
             Year = arg[0];
             Month = arg[1];
             DayList.Clear();
+            datePicker.Date = new DateTime(Year, Month, 1);
             foreach (var data in provider.GetDayDataOfMonth(Year, Month))
             {
                 DayList.Add(data);
@@ -52,7 +53,23 @@ namespace PocketBook
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var dayData = e.ClickedItem as DayData;
+            var date = new DateTime(Year, Month, dayData.Day);
+            if (date > DateTime.Now.Date) return;
             this.Frame.Navigate(typeof(DetailDayView), new DateTime(Year, Month, dayData.Day));
+        }
+
+        private void DatePicker_DateChanged(object sender, DatePickerValueChangedEventArgs e)
+        {
+            var picker = sender as DatePicker;
+            if (e.NewDate <= DateTime.Now)
+            {
+                int[] arg = { e.NewDate.Year, e.NewDate.Month };
+                this.Frame.Navigate(typeof(DailyView), arg);
+            }
+            else
+            {
+                picker.Date = e.OldDate;
+            }
         }
     }
 }
