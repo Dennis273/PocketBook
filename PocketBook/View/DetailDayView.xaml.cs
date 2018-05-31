@@ -94,14 +94,28 @@ namespace PocketBook
             if (!(e.OriginalSource is ListViewItemPresenter item)) return;
             // data is the binded dataEntry
             data = item.Content as DataEntry;
-            var flyoutItem = new MenuFlyoutItem();
             var flyout = new MenuFlyout();
-            flyoutItem.Text = "分享";
+            var flyoutItem = new MenuFlyoutItem
+            {
+                Text = "分享",
+                Tag = "share",
+            };
             flyoutItem.Click += MenuFlyoutItemTapped;
-            flyoutItem.Tag = "share";
+            var flyoutItem2 = new MenuFlyoutItem
+            {
+                Text = "删除",
+                Tag = "delete",
+            };
+            flyoutItem2.Click += (object sender2, RoutedEventArgs e2) =>
+            {
+                provider.DeleteDataEntry(data);
+            };
             flyout.Items.Add(flyoutItem);
+            flyout.Items.Add(flyoutItem2);
             flyout.ShowAt(item);
         }
+
+
         private void MenuFlyoutItemTapped(object sender, RoutedEventArgs e)
         {
             var item = sender as MenuFlyoutItem;
