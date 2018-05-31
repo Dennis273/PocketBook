@@ -319,7 +319,7 @@ namespace PocketBook
             }
         }
 
-        internal void ChangeCatagory(string oldCatagory, string newCatagory = "未定义")
+        internal void ChangeCatagory(string oldCatagory, string newCatagory = "其他")
         {
             try
             {
