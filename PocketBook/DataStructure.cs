@@ -15,11 +15,12 @@ namespace PocketBook
 
         public string Id;
 
-        public DataEntry(float money, DateTime spendDate, string catagory, string id = "")
+        public DataEntry(float money, DateTime spendDate, string catagory, string comment = "", string id = "")
         {
             Money = money;
             SpendDate = spendDate;
             Catagory = catagory;
+            Comment = comment;
             Id = id == "" ? Guid.NewGuid().ToString() : id;
         }
     }
