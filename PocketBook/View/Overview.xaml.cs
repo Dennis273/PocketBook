@@ -23,11 +23,10 @@ namespace PocketBook
     public sealed partial class Overview : Page
     {
         DataProvider provider;
-        float used;
-        float avgLeft;
         public Overview()
         {
             this.InitializeComponent();
+            provider = DataProvider.GetDataProvider();
         }
         public string Summary
         {
@@ -39,11 +38,11 @@ namespace PocketBook
         }
         private float GetSpentMoney()
         {
-            return 700;
+            return provider.GetSpentMoneyOfCurrentMonth().Money;
         }
         private float GetAvgLeftMoney()
         {
-            return 60;
+            return provider.GetAverageLeftOfCurrentMonth();
         }
     }
 }

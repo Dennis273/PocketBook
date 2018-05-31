@@ -40,6 +40,13 @@ namespace PocketBook
             }
         }
 
+        public float GetAverageLeftOfCurrentMonth()
+        {
+            // 返回剩余每日
+            // （预算 - 已花费）/ 剩余日期
+            return 0;
+        }
+
         private void UpdataTodayAndCurrentMonth(DataOperation dataOperation, DataEntry dataEntry)
         {
             var endTime = new DateTime(DateTime.Now.Year, currentMonth.Month, userSetting.RenewDate);
@@ -69,7 +76,7 @@ namespace PocketBook
             return todayData;
         }
 
-        public MonthData GetCurrentMonthSpent()
+        public MonthData GetSpentMoneyOfCurrentMonth()
         {
             return currentMonth;
         }
