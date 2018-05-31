@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
@@ -21,6 +24,7 @@ namespace PocketBook
         private DataProvider provider = DataProvider.GetDataProvider();
         public ObservableCollection<DataEntry> dataEntries;
         public DateTime Date;
+        public DataEntry data;
         public String Header
         {
             get
@@ -31,7 +35,8 @@ namespace PocketBook
         public DetailDayView()
         {
             InitializeComponent();
-            provider.DataChanged += OnEntryListChanged;
+            DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+            dataTransferManager.DataRequested += DataTransferManager_DataRequested;
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -79,6 +84,42 @@ namespace PocketBook
         {
             // Raise the PropertyChanged event, passing the name of the property whose value has changed.
             this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void ListView_RightTapped(object sender, Windows.UI.Xaml.Input.RightTappedRoutedEventArgs e)
+        {
+            var listView = (FrameworkElement)sender;
+            // ListViewItemPresenter is the item tapped
+            if (!(e.OriginalSource is ListViewItemPresenter item)) return;
+            // data is the binded dataEntry
+            data = item.Content as DataEntry;
+            var flyoutItem = new MenuFlyoutItem();
+            var flyout = new MenuFlyout();
+            flyoutItem.Text = "分享";
+            flyoutItem.Click += MenuFlyoutItemTapped;
+            flyoutItem.Tag = "share";
+            flyout.Items.Add(flyoutItem);
+            flyout.ShowAt(item);
+        }
+        private void MenuFlyoutItemTapped(object sender, RoutedEventArgs e)
+        {
+            var item = sender as MenuFlyoutItem;
+            switch (item.Tag)
+            {
+                case "share":
+                    ShowShareDialog();
+                    break;
+            }
+        }
+        private void ShowShareDialog()
+        {
+            DataTransferManager.ShowShareUI();
+        }
+        private void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        {
+            DataRequest request = args.Request;
+            request.Data.Properties.Title = "消费记录";
+            request.Data.Properties.Description = $"消费金额：{data.Money}元\n类别：{data.Catagory}\n备注：{data.Comment}";
         }
     }
 }

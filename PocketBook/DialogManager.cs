@@ -97,14 +97,17 @@ namespace PocketBook
         public static async Task<DataEntry> ShowNewEntryDialog(List<string> catagories)
         {
             var d = new CustomDialog("新增条目");
-            d.AddTextInput("金额").AddDateInput("日期").AddComboBox("类别", catagories).AddTwinButtons("确定", "取消");
+            d.AddTextInput("金额").AddDateInput("日期").AddComboBox("类别", catagories).AddTextInput("备注").AddTwinButtons("确定", "取消");
             var list = await d.ShowInputDialog();
             if (list == null) return null;
             var t = list[0] as TextBox;
             var j = list[1] as DatePicker;
             var k = list[2] as ComboBox;
-            if (t == null || j == null || k == null) return null;
-            return new DataEntry(float.Parse(t.Text), j.Date.Date, (string)k.SelectedValue);
+            var m = list[3] as TextBox;
+            if (t == null || j == null || k == null || m == null) return null;
+            var a =  new DataEntry(float.Parse(t.Text), j.Date.Date, (string)k.SelectedValue);
+            a.Comment = m.Text;
+            return a;
         }
         public static async Task<bool> ShowConfirmDialog(string message = "您确定要执行此操作？", string description = "")
         {
@@ -203,6 +206,7 @@ namespace PocketBook
             dialog.AddMessage($"金额: {item.Money}");
             dialog.AddMessage($"日期: {item.SpendDate.ToShortDateString()}");
             dialog.AddMessage($"类别: {item.Catagory}");
+            dialog.AddMessage($"备注: {item.Comment}");
             dialog.AddTwinButtons("返回", "删除");
             var result = await dialog.ShowDialog();
             if (result == ContentDialogResult.Primary) return 0;
