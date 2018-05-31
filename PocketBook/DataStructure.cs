@@ -56,7 +56,6 @@ namespace PocketBook
             Username = username;
             RenewDate = renewDate;
             Budget = budget;
-            if (catagories == null) catagories = new List<string>();
             Catagories = catagories;
         }
     }

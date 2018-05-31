@@ -172,8 +172,6 @@ namespace PocketBook
             return map;
         }
 
-
-
         internal void AddDataEntry(DataEntry dataEntry)
         {
             try

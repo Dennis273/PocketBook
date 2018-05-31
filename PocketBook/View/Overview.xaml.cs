@@ -22,9 +22,13 @@ namespace PocketBook
     /// </summary>
     public sealed partial class Overview : Page
     {
+        DataProvider provider;
+        float used;
+        float avgLeft;
         public Overview()
         {
             this.InitializeComponent();
+            provider = DataProvider.GetDataProvider();
         }
         public string Summary
         {
