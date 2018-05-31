@@ -40,6 +40,11 @@ namespace PocketBook
             dataEntries = new ObservableCollection<DataEntry>(provider.GetDayDataEntry(Date.Year, Date.Month, Date.Day));
             provider.DataChanged += OnEntryListChanged;
         }
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            provider.DataChanged -= OnEntryListChanged;
+        }
 
         private async void Add_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -49,24 +54,24 @@ namespace PocketBook
 
         public void OnEntryListChanged(DataOperation operation, DataEntry dataEntry)
         {
-            //    if (operation == DataOperation.Add)
-            //    {
-            //        dataEntries.Add(dataEntry);
-            //    }
-            //    if (operation == DataOperation.Remove)
-            //    {
-            //        dataEntries.Remove(dataEntry);
-            //    }
-            //    if (operation == DataOperation.Update)
-            //    {
-
-            //    }
+            switch (operation)
+            {
+                case DataOperation.Add:
+                    dataEntries.Insert(0, dataEntry);
+                    break;
+                case DataOperation.Remove:
+                    dataEntries.Remove(dataEntry);
+                    break;
+                case DataOperation.Update:
+                    break;
+            }
         }
 
         private async void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var dataEntry = e.ClickedItem as DataEntry;
             var opt = await CustomDialog.ShowDetailDataEntry(dataEntry);
+            // 0 for default, 1 for delete operation
             if (opt == 1) provider.DeleteDataEntry(dataEntry);
         }
 

@@ -99,6 +99,7 @@ namespace PocketBook
             var d = new CustomDialog("新增条目");
             d.AddTextInput("金额").AddDateInput("日期").AddComboBox("类别", catagories).AddTwinButtons("确定", "取消");
             var list = await d.ShowInputDialog();
+            if (list == null) return null;
             var t = list[0] as TextBox;
             var j = list[1] as DatePicker;
             var k = list[2] as ComboBox;
