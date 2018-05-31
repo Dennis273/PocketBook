@@ -105,9 +105,6 @@
     <Compile Include="View\DetailDayView.xaml.cs">
       <DependentUpon>DetailDayView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\DetailMonthView.xaml.cs">
-      <DependentUpon>DetailMonthView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="DialogManager.cs" />
     <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -153,10 +150,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\DetailDayView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\DetailMonthView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

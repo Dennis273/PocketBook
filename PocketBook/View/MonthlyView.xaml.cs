@@ -49,5 +49,11 @@ namespace PocketBook
             ((ItemsWrapGrid)gridView.ItemsPanelRoot).ItemWidth = e.NewSize.Width / columns;
         }
 
+        private void GridView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var monthData = e.ClickedItem as MonthData;
+            int[] arg = { Year, monthData.Month };
+            this.Frame.Navigate(typeof(DailyView), arg);
+        }
     }
 }

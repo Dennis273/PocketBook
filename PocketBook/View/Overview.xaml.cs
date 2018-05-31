@@ -28,7 +28,6 @@ namespace PocketBook
         public Overview()
         {
             this.InitializeComponent();
-            provider = DataProvider.GetDataProvider();
         }
         public string Summary
         {
