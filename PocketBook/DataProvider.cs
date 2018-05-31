@@ -81,6 +81,7 @@ namespace PocketBook
                 DataBase.InitializeDateBase();
                 FetchData();
                 DataChanged += UpdataTodayAndCurrentMonth;
+                SearchDataEntriesByKey("未");
             }
             catch (Exception e)
             {
@@ -123,6 +124,21 @@ namespace PocketBook
             {
                 Tile.TileNotificate(todayData.Money, (userSetting.Budget - currentMonth.Money) / (endTime.Subtract(DateTime.Now).Days+1));
             }
+        }
+
+        public List<DataEntry> SearchDataEntriesByKey(string key)
+        {
+            var list = new List<DataEntry>();
+            //dataEntries.
+
+            foreach (DataEntry entry in dataEntries)
+            {
+                if (entry.Catagory.Contains(key) || entry.Comment.Contains(key))
+                {
+                    list.Add(entry);
+                }
+            }
+            return list;
         }
 
         public List<MonthData> GetMonthDataOfYear(int year)
