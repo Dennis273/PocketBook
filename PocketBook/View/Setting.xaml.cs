@@ -23,7 +23,13 @@ namespace PocketBook
     public sealed partial class Setting : Page, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
-        public List<string> Catagories;
+        public List<string> Catagories
+        {
+            get
+            {
+                return provider.GetCatagories();
+            }
+        }
         public string Username
         {
             get
@@ -58,10 +64,10 @@ namespace PocketBook
             setting = provider.GetUserSetting();
         }
 
-        private void HyperlinkButton_Click(object sender, RoutedEventArgs e)
+        private async void HyperlinkButton_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as HyperlinkButton;
-            switch(button.Tag)
+            switch (button.Tag)
             {
                 case "changeUsername":
                     GetInputUsername();
@@ -74,6 +80,13 @@ namespace PocketBook
                     break;
                 case "changeLanguage":
                     CustomDialog.ShowConfirmDialog("更改语言", "不存在的");
+                    break;
+                case "addCatagory":
+                    var dialog = new CustomDialog("添加类别");
+                    var l = await dialog.AddTextInput("类别").AddTwinButtons("确定", "取消").ShowInputDialog();
+                    if (l == null) break;
+                    var i = l[0] as TextBox;
+                    if (i != null) provider.AddCatagory(i.Text);
                     break;
                 default:
                     break;
@@ -92,7 +105,8 @@ namespace PocketBook
         private async void GetInputBudget()
         {
             var b = await CustomDialog.ShowBudgetDialog();
-            if (b != -1) {
+            if (b != -1)
+            {
                 setting.Budget = b;
                 provider.SetUserSetting(setting);
                 OnPropertyChanged("MonthBudget");
@@ -115,7 +129,8 @@ namespace PocketBook
             switch (button.Tag)
             {
                 case "removeAllData":
-                    if (await CustomDialog.ShowConfirmDialog("清除所有数据", "此操作将会清楚所有用户数据，您确定要继续吗？") == true) {
+                    if (await CustomDialog.ShowConfirmDialog("清除所有数据", "此操作将会清楚所有用户数据，您确定要继续吗？") == true)
+                    {
                         provider.__DeleteAll();
                         // Navigate to Welcome Page
                     }
@@ -128,21 +143,49 @@ namespace PocketBook
 
         private async void ShowCatagories()
         {
-            var dialog = new ContentDialog();
-            var panel = new StackPanel();
+            var dialog = new ContentDialog
+            {
+                PrimaryButtonText = "返回",
+            };
             var list = new ListView();
-            foreach(var catagory in provider.GetCatagories())
+            var scrollView = new ScrollViewer
+            {
+                Content = list,
+            };
+            dialog.Content = scrollView;
+            foreach (var catagory in provider.GetCatagories())
             {
                 list.Items.Add(catagory);
             }
-            panel.Children.Add(list);
-            dialog.Content = panel;
+            list.IsRightTapEnabled = true;
+            list.RightTapped += (object sender, RightTappedRoutedEventArgs e) =>
+            {
+                var listView = (FrameworkElement)sender;
+                // ListViewItemPresenter is the item tapped
+                if (!(e.OriginalSource is ListViewItemPresenter item)) return;
+                // cata is the binded dataEntry
+                var catagory = item.Content as string;
+                var flyoutItem = new MenuFlyoutItem();
+                var flyout = new MenuFlyout();
+                flyoutItem.Text = "删除";
+                flyoutItem.Click += (object sender2, RoutedEventArgs e2) =>
+                {
+                    provider.ChangeCatagory(catagory);
+                    list.Items.Remove(catagory);
+                };
+                flyoutItem.Tag = "share";
+                flyout.Items.Add(flyoutItem);
+                flyout.ShowAt(item);
+            };
+
             await dialog.ShowAsync();
         }
+
 
         public void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+
     }
 }

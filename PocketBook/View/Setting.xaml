@@ -27,7 +27,7 @@
             <TextBlock FontSize="16" Text="支出种类" Margin="0, 10, 0, 0"/>
             <StackPanel Orientation="Horizontal">
                 <Button FontSize="12" Content="查看" Click="Button_Click" Margin="0, 10, 10, 10" Height="30" Tag="viewCatagories"/>
-                <HyperlinkButton Content="更改" Margin="0, 10, 10, 0" Tag="changeLanguage" />
+                <HyperlinkButton Content="更改" Margin="0, 10, 10, 0" Tag="addCatagory" Click="HyperlinkButton_Click"/>
             </StackPanel>
             <TextBlock FontSize="16" Text="语言" Margin="0, 10, 0, 0"/>
             <StackPanel Orientation="Horizontal">
