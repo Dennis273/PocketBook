@@ -11,7 +11,7 @@ namespace PocketBook
         private UserSetting userSetting;
         private MonthData currentMonth;
         private DayData todayData;
-
+        private static DataProvider instance;
         public delegate void DataChangedHandler(DataOperation dataOperation, DataEntry dataEntry);
 
         public event DataChangedHandler DataChanged;
@@ -21,9 +21,17 @@ namespace PocketBook
             if (instance == null) instance = new DataProvider();
             return instance;
         }
+           
+        public DayData GetTodaySpent()
+        {
+            return todayData;
+        }
 
-        private static DataProvider instance;
-
+        public MonthData GetCurrentMonthSpent()
+        {
+            return currentMonth;
+        }
+            
         private DataProvider()
         {
             try
