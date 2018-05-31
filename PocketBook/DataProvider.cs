@@ -11,24 +11,58 @@ namespace PocketBook
         private UserSetting userSetting;
         private MonthData currentMonth;
         private DayData todayData;
-
+        private static DataProvider instance;
         public delegate void DataChangedHandler(DataOperation dataOperation, DataEntry dataEntry);
 
         public event DataChangedHandler DataChanged;
 
         public static DataProvider GetDataProvider()
         {
-            if (instance == null) instance = new DataProvider();
+            if (instance == null)
+            {
+                instance = new DataProvider();
+            }
             return instance;
         }
 
-        private static DataProvider instance;
+        private void UpdataTodayAndCurrentMonth(DataOperation dataOperation, DataEntry dataEntry)
+        {
+            var endTime = new DateTime(DateTime.Now.Year, currentMonth.Month, userSetting.RenewDate);
+            var startTime = endTime.AddMonths(-1);
+            if (dataEntry.SpendDate.CompareTo(endTime) == 0 && dataEntry.SpendDate.CompareTo(startTime) == 0 )
+            {
 
+            }
+        }
+           
+        public DayData GetTodaySpent()
+        {
+            return todayData;
+        }
+
+        public MonthData GetCurrentMonthSpent()
+        {
+            return currentMonth;
+        }
+            
         private DataProvider()
         {
             try
             {
                 DataBase.InitializeDateBase();
+                FetchData();
+                DataChanged += UpdataTodayAndCurrentMonth;
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.ToString());
+            }
+        }
+
+        private void FetchData()
+        {
+            try
+            {
                 dataEntries = DataBase.GetAllEntries();
                 userSetting = DataBase.GetUserSetting();
                 if (userSetting.Catagories == null)
@@ -55,7 +89,7 @@ namespace PocketBook
             //{
             //    Tile.TileNotificate(todayData.Money, userSetting.Budget);
             //}
-            Tile.TileNotificate(todayData.Money, (float)DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
+            Tile.TileNotificate(todayData.Money, (userSetting.Budget - currentMonth.Money) / (float)DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
         }
 
         public List<MonthData> GetMonthDataOfYear(int year)
@@ -265,6 +299,7 @@ namespace PocketBook
             try
             {
                 DataBase.__DeleteAllData();
+                FetchData();
             }
             catch (Exception e)
             {
