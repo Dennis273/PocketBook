@@ -40,7 +40,7 @@ namespace PocketBook
         }
         private float GetSpentMoney()
         {
-
+            return 700;
         }
         private float GetAvgLeftMoney()
         {
