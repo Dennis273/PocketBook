@@ -71,8 +71,6 @@ namespace PocketBook
             var dateInput = new DatePicker
             {
                 Header = header,
-                YearVisible = false,
-                MonthVisible = false,
             };
             var panel = dialog.Content as Panel;
             panel.Children.Add(dateInput);
@@ -102,10 +100,10 @@ namespace PocketBook
             d.AddTextInput("金额").AddDateInput("日期").AddComboBox("类别", catagories).AddTwinButtons("确定", "取消");
             var list = await d.ShowInputDialog();
             var t = list[0] as TextBox;
-            var j = list[1] as CalendarDatePicker;
+            var j = list[1] as DatePicker;
             var k = list[2] as ComboBox;
             if (t == null || j == null || k == null) return null;
-            return new DataEntry(float.Parse(t.Text), j.Date.Value.Date, (string)k.SelectedValue);
+            return new DataEntry(float.Parse(t.Text), j.Date.Date, (string)k.SelectedValue);
         }
         public static async Task<bool> ShowConfirmDialog(string message = "您确定要执行此操作？", string description = "")
         {

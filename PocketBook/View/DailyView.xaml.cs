@@ -32,7 +32,7 @@ namespace PocketBook
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            var arg = e.Parameter as int[];
+            var arg = (int[])e.Parameter;
             Year = arg[0];
             Month = arg[1];
             DayList.Clear();
@@ -47,6 +47,12 @@ namespace PocketBook
             // the width of the page
             var columns = Math.Ceiling(ActualWidth / 300);
             ((ItemsWrapGrid)gridView.ItemsPanelRoot).ItemWidth = e.NewSize.Width / columns;
+        }
+
+        private void GridView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var dayData = e.ClickedItem as DayData;
+            this.Frame.Navigate(typeof(DetailDayView), new DateTime(Year, Month, dayData.Day));
         }
     }
 }

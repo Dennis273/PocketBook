@@ -13,7 +13,7 @@
             <RowDefinition Height="8*"/>
         </Grid.RowDefinitions>
         <Grid Margin="50, 0, 50, 0" Grid.Row="0">
-            <TextBlock Text="{x:Bind Header}" FontSize="48" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            <TextBlock Text="{x:Bind Header, Mode=OneWay}" FontSize="48" VerticalAlignment="Center" HorizontalAlignment="Left"/>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>

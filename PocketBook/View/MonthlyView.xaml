@@ -19,7 +19,7 @@
         <Pivot Grid.Row="1">
             <PivotItem Header="每月">
                 <ScrollViewer Margin="40, 20, 40, 20" Grid.Row="1" HorizontalAlignment="Stretch">
-                    <GridView ItemsSource="{x:Bind MonthList, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  x:Name="gridView" SizeChanged="OnGridViewSizeChanged">
+                    <GridView IsItemClickEnabled="True" ItemClick="GridView_ItemClick" ItemsSource="{x:Bind MonthList, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  x:Name="gridView" SizeChanged="OnGridViewSizeChanged">
                         <GridView.ItemContainerStyle>
                             <Style TargetType="GridViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>

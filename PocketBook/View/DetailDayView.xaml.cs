@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -12,10 +15,11 @@ namespace PocketBook
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class DetailDayView : Page
+    public sealed partial class DetailDayView : Page, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
         private DataProvider provider = DataProvider.GetDataProvider();
-        public List<DataEntry> dataEntries;
+        public ObservableCollection<DataEntry> dataEntries;
         public DateTime Date;
         public String Header
         {
@@ -33,7 +37,7 @@ namespace PocketBook
         {
             base.OnNavigatedTo(e);
             Date = (DateTime)e.Parameter;
-            dataEntries = provider.GetDayDataEntry(Date.Year, Date.Month, Date.Day);
+            dataEntries = new ObservableCollection<DataEntry>(provider.GetDayDataEntry(Date.Year, Date.Month, Date.Day));
             provider.DataChanged += OnEntryListChanged;
         }
 
@@ -45,25 +49,31 @@ namespace PocketBook
 
         public void OnEntryListChanged(DataOperation operation, DataEntry dataEntry)
         {
-            if (operation == DataOperation.Add)
-            {
-                dataEntries.Add(dataEntry);
-            }
-            if (operation == DataOperation.Remove)
-            {
-                dataEntries.Remove(dataEntry);
-            }
-            if (operation == DataOperation.Update)
-            {
-                var e = dataEntries.Find(entry => dataEntry.Id == entry.Id);
-                e = dataEntry;
-            }
+            //    if (operation == DataOperation.Add)
+            //    {
+            //        dataEntries.Add(dataEntry);
+            //    }
+            //    if (operation == DataOperation.Remove)
+            //    {
+            //        dataEntries.Remove(dataEntry);
+            //    }
+            //    if (operation == DataOperation.Update)
+            //    {
+
+            //    }
         }
 
         private async void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
             var dataEntry = e.ClickedItem as DataEntry;
             var opt = await CustomDialog.ShowDetailDataEntry(dataEntry);
+            if (opt == 1) provider.DeleteDataEntry(dataEntry);
+        }
+
+        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            // Raise the PropertyChanged event, passing the name of the property whose value has changed.
+            this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
