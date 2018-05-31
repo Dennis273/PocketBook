@@ -11,24 +11,87 @@ namespace PocketBook
         private UserSetting userSetting;
         private MonthData currentMonth;
         private DayData todayData;
-
+        private static DataProvider instance;
         public delegate void DataChangedHandler(DataOperation dataOperation, DataEntry dataEntry);
 
         public event DataChangedHandler DataChanged;
 
         public static DataProvider GetDataProvider()
         {
-            if (instance == null) instance = new DataProvider();
+            if (instance == null)
+            {
+                instance = new DataProvider();
+            }
             return instance;
         }
 
-        private static DataProvider instance;
+        private void FetchCurrentMonth()
+        {
+            var endTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, userSetting.RenewDate);
+            if (DateTime.Now.Day >= userSetting.RenewDate) endTime = endTime.AddMonths(1);
+            var startTime = endTime.AddMonths(-1);
+            currentMonth.Money = 0;
+            foreach (DataEntry entry in dataEntries)
+            {
+                if (entry.SpendDate.CompareTo(endTime) == -1 && entry.SpendDate.CompareTo(startTime) == 1)
+                {
+                    currentMonth.Money += entry.Money;
+                }
+            }
+        }
 
+        private void UpdataTodayAndCurrentMonth(DataOperation dataOperation, DataEntry dataEntry)
+        {
+            var endTime = new DateTime(DateTime.Now.Year, currentMonth.Month, userSetting.RenewDate);
+            if (DateTime.Now.Day >= userSetting.RenewDate) endTime = endTime.AddMonths(1);
+            var startTime = endTime.AddMonths(-1);
+            if (dataEntry.SpendDate.CompareTo(endTime) == -1 && dataEntry.SpendDate.CompareTo(startTime) == 1)
+            {
+               if (dataOperation == DataOperation.Add)
+                {
+                    currentMonth.Money += dataEntry.Money;
+                }
+                else if (dataOperation == DataOperation.Remove)
+                {
+                    currentMonth.Money -= dataEntry.Money;
+                }
+               else
+                {
+                    FetchCurrentMonth();
+                }
+                UpdateTile();
+            }
+        }
+           
+        public DayData GetTodaySpent()
+        {
+            todayData = GetDayDataOfMonth(DateTime.Now.Year, DateTime.Now.Month)[DateTime.Now.Day - 1];
+            return todayData;
+        }
+
+        public MonthData GetCurrentMonthSpent()
+        {
+            return currentMonth;
+        }
+            
         private DataProvider()
         {
             try
             {
                 DataBase.InitializeDateBase();
+                FetchData();
+                DataChanged += UpdataTodayAndCurrentMonth;
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e.ToString());
+            }
+        }
+
+        private void FetchData()
+        {
+            try
+            {
                 dataEntries = DataBase.GetAllEntries();
                 userSetting = DataBase.GetUserSetting();
                 if (userSetting.Catagories == null)
@@ -36,7 +99,8 @@ namespace PocketBook
                     DataBase.InitializeUserSetting();
                     userSetting = DataBase.GetUserSetting();
                 }
-                currentMonth = GetMonthDataOfYear(DateTime.Now.Year)[DateTime.Now.Month - 1];
+                currentMonth = new MonthData(DateTime.Now.Month, 0);
+                FetchCurrentMonth();
                 todayData = GetDayDataOfMonth(DateTime.Now.Year, DateTime.Now.Month)[DateTime.Now.Day - 1];
                 UpdateTile();
             }
@@ -48,14 +112,17 @@ namespace PocketBook
 
         private void UpdateTile()
         {
-            //if (userSetting.Budget * 0.5 < currentMonth.Money)
-            //{
-            //    Tile.TileNotificate(userSetting.Budget, currentMonth.Money, userSetting.Budget / currentMonth.Money);
-            //} else if (todayData.Money > (userSetting.Budget - currentMonth.Money) / (float)DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month))
-            //{
-            //    Tile.TileNotificate(todayData.Money, userSetting.Budget);
-            //}
-            Tile.TileNotificate(todayData.Money, (float)DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
+            var endTime = new DateTime(DateTime.Now.Year, currentMonth.Month, userSetting.RenewDate);
+            if (DateTime.Now.Day >= userSetting.RenewDate) endTime = endTime.AddMonths(1);
+
+            if (userSetting.Budget * 0.3 < currentMonth.Money)
+            {
+                Tile.TileNotificate(currentMonth.Money, userSetting.Budget, currentMonth.Money / userSetting.Budget);
+            }
+            if (todayData.Money > (userSetting.Budget - currentMonth.Money) / (userSetting.Budget - currentMonth.Money) / (endTime.Subtract(DateTime.Now).Days + 1))
+            {
+                Tile.TileNotificate(todayData.Money, (userSetting.Budget - currentMonth.Money) / (endTime.Subtract(DateTime.Now).Days+1));
+            }
         }
 
         public List<MonthData> GetMonthDataOfYear(int year)
@@ -265,6 +332,7 @@ namespace PocketBook
             try
             {
                 DataBase.__DeleteAllData();
+                FetchData();
             }
             catch (Exception e)
             {
