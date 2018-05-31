@@ -88,7 +88,6 @@ namespace PocketBook
                 DataBase.InitializeDateBase();
                 FetchData();
                 DataChanged += UpdataTodayAndCurrentMonth;
-                SearchDataEntriesByKey("未");
             }
             catch (Exception e)
             {
