@@ -48,7 +48,8 @@ namespace PocketBook
                     contentFrame.Navigate(typeof(Overview));
                     break;
                 case "DailyView":
-                    contentFrame.Navigate(typeof(DailyView));
+                    int[] arg = { DateTime.Now.Year, DateTime.Now.Month };
+                    contentFrame.Navigate(typeof(DailyView), arg);
                     break;
                 case "MonthlyView":
                     contentFrame.Navigate(typeof(MonthlyView), DateTime.Now.Year);

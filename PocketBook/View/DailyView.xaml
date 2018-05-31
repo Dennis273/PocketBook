@@ -16,21 +16,37 @@
             <TextBlock Text="2018年5月" FontSize="48" VerticalAlignment="Center" HorizontalAlignment="Left"/>
             <DatePicker YearVisible="True" DayVisible="False" HorizontalAlignment="Right"/>
         </Grid>
-        <ScrollViewer Margin="40, 20, 40, 20" Grid.Row="1">
-            <GridView>
-                <GridView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel>
-                            <TextBlock Text="???"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </GridView.ItemTemplate>
-                <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ItemsWrapGrid MaximumRowsOrColumns="7" Orientation="Horizontal" HorizontalAlignment="Left"/>
-                    </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
-            </GridView>
-        </ScrollViewer>
+        <Pivot Grid.Row="1">
+            <PivotItem Header="每日">
+                <ScrollViewer Margin="40, 20, 40, 20" Grid.Row="1">
+                    <GridView ItemsSource="{x:Bind DayList, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  x:Name="gridView" SizeChanged="OnGridViewSizeChanged">
+                        <GridView.ItemContainerStyle>
+                            <Style TargetType="GridViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                                <Setter Property="Margin" Value="0"/>
+                            </Style>
+                        </GridView.ItemContainerStyle>
+                        <GridView.ItemTemplate>
+                            <DataTemplate x:DataType="local:DayData">
+                                <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                    <TextBlock Text="{x:Bind Day, Mode=OneWay}"/>
+                                    <TextBlock Text="{x:Bind Money, Mode=OneWay}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid MaximumRowsOrColumns="7" Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+                    </GridView>
+                </ScrollViewer>
+            </PivotItem>
+            <PivotItem Header="统计">
+                <TextBlock Text="sss"/>
+            </PivotItem>
+        </Pivot>
+
     </Grid>
 </Page>

@@ -17,14 +17,36 @@ using Windows.UI.Xaml.Navigation;
 
 namespace PocketBook
 {
-    /// <summary>
-    /// 可用于自身或导航至 Frame 内部的空白页。
-    /// </summary>
     public sealed partial class DailyView : Page
     {
+        DataProvider provider;
+        List<DayData> DayList;
+        public int Year;
+        public int Month;
         public DailyView()
         {
             this.InitializeComponent();
+            provider = DataProvider.GetDataProvider();
+            DayList = new List<DayData>();
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            var arg = e.Parameter as int[];
+            Year = arg[0];
+            Month = arg[1];
+            DayList.Clear();
+            foreach (var data in provider.GetDayDataOfMonth(Year, Month))
+            {
+                DayList.Add(data);
+            }
+        }
+        private void OnGridViewSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            // Here I'm calculating the number of columns I want based on
+            // the width of the page
+            var columns = Math.Ceiling(ActualWidth / 300);
+            ((ItemsWrapGrid)gridView.ItemsPanelRoot).ItemWidth = e.NewSize.Width / columns;
         }
     }
 }

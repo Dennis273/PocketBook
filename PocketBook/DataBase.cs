@@ -25,6 +25,7 @@ namespace PocketBook
                 statement.Bind(4, "未定义");
                 statement.Step();
             }
+           
         }
 
         private static SQLiteConnection connection = new SQLiteConnection(DB_NAME);
