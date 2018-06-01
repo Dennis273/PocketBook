@@ -266,6 +266,32 @@ namespace PocketBook
             return map;
         }
 
+        // 获得某类型的消费占某年总消费的百分比
+        // 参数: 要查询的年份
+        // 返回: 记录<类别, 所占百分比>的字典
+        public Dictionary<string, float> GetPercentageAmongYear(int year)
+        {
+            var map = new Dictionary<string, float>();
+            float totalMoney = 0.0f;
+            foreach (string catagory in userSetting.Catagories)
+            {
+                map.Add(catagory, 0.0f);
+            }
+            foreach (DataEntry entry in dataEntries)
+            {
+                if (entry.SpendDate.Year == year)
+                {
+                    map[entry.Catagory] += entry.Money;
+                    totalMoney += entry.Money;
+                }
+            }
+            foreach (var item in map)
+            {
+                map[item.Key] = item.Value / totalMoney;
+            }
+            return map;
+        }
+
         // 添加消费记录, 添加到数据库和成员变量[dataEntries]中
         // 参数: 要添加的消费记录
         // 返回: 如果成功添加则返回true, 否则返回false
