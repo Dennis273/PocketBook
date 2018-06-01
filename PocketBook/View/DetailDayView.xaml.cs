@@ -58,6 +58,10 @@ namespace PocketBook
         {
             var entry = await CustomDialog.ShowNewEntryDialog(provider.GetCatagories());
             if (entry != null) provider.AddDataEntry(entry);
+            else
+            {
+                await CustomDialog.ShowConfirmDialog("添加失败", "输入的信息有误！");
+            }
         }
 
         public void OnEntryListChanged(DataOperation operation, DataEntry dataEntry)
