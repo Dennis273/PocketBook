@@ -32,12 +32,14 @@ namespace PocketBook
                 return $"{Date.Year}年{Date.Month}月{Date.Day}日";
             }
         }
+
         public DetailDayView()
         {
             InitializeComponent();
             DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
             dataTransferManager.DataRequested += DataTransferManager_DataRequested;
         }
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -45,6 +47,7 @@ namespace PocketBook
             dataEntries = new ObservableCollection<DataEntry>(provider.GetDayDataEntry(Date.Year, Date.Month, Date.Day));
             provider.DataChanged += OnEntryListChanged;
         }
+
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
@@ -101,20 +104,19 @@ namespace PocketBook
                 Tag = "share",
             };
             flyoutItem.Click += MenuFlyoutItemTapped;
-            var flyoutItem2 = new MenuFlyoutItem
+            var flyout_remove = new MenuFlyoutItem
             {
                 Text = "删除",
                 Tag = "delete",
             };
-            flyoutItem2.Click += (object sender2, RoutedEventArgs e2) =>
+            flyout_remove.Click += (object sender2, RoutedEventArgs e2) =>
             {
                 provider.DeleteDataEntry(data);
             };
             flyout.Items.Add(flyoutItem);
-            flyout.Items.Add(flyoutItem2);
+            flyout.Items.Add(flyout_remove);
             flyout.ShowAt(item);
         }
-
 
         private void MenuFlyoutItemTapped(object sender, RoutedEventArgs e)
         {
@@ -126,10 +128,12 @@ namespace PocketBook
                     break;
             }
         }
+
         private void ShowShareDialog()
         {
             DataTransferManager.ShowShareUI();
         }
+
         private void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
         {
             DataRequest request = args.Request;

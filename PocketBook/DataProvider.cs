@@ -80,7 +80,8 @@ namespace PocketBook
         {
             return currentMonth;
         }
-            
+        
+
         private DataProvider()
         {
             try
@@ -227,8 +228,10 @@ namespace PocketBook
             return map;
         }
 
-        internal void AddDataEntry(DataEntry dataEntry)
+        internal bool AddDataEntry(DataEntry dataEntry)
         {
+            if (dataEntry.Money <= 0) return false;
+            if (dataEntry.SpendDate > DateTime.Now) return false;
             try
             {
                 DataBase.InsertEntry(dataEntry);
@@ -239,6 +242,7 @@ namespace PocketBook
             {
                 Console.Error.WriteLine(err.ToString());
             }
+            return true;
         }
 
         internal void UpdateDataEntry(DataEntry dataEntry)
@@ -278,8 +282,11 @@ namespace PocketBook
             }
         }
 
-        internal void SetUserSetting(UserSetting userSetting)
+        internal bool SetUserSetting(UserSetting userSetting)
         {
+            if (userSetting.Username == null || userSetting.Username == "") return false;
+            if (userSetting.RenewDate == 0) return false;
+            if (userSetting.Budget <= 0) return false;
             try
             {
                 DataBase.UpdateUserSetting(userSetting);
@@ -291,6 +298,7 @@ namespace PocketBook
             {
                 Console.Error.WriteLine(e.ToString());
             }
+            return true;
         }
 
         public UserSetting GetUserSetting()
@@ -305,6 +313,7 @@ namespace PocketBook
 
         internal void AddCatagory(string catagory)
         {
+            if (catagory == "") return;
             try
             {
                 string newCatagories = "";
@@ -327,6 +336,7 @@ namespace PocketBook
 
         internal void ChangeCatagory(string oldCatagory, string newCatagory = "其他")
         {
+            if (newCatagory == "") return;
             try
             {
                 if (userSetting.Catagories.Contains(oldCatagory))

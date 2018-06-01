@@ -29,6 +29,7 @@ namespace PocketBook
     {
         public int Day;
         public float Money;
+        public float Percentage;
         public DayData(int day, float money)
         {
             Day = day;
@@ -39,6 +40,7 @@ namespace PocketBook
     {
         public int Month;
         public float Money;
+        public float Percentage;
         public MonthData(int month, float money)
         {
             Month = month;

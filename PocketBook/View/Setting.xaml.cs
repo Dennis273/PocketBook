@@ -115,7 +115,7 @@ namespace PocketBook
         private async void GetInputRenewDate()
         {
             var d = await CustomDialog.ShowRenewDateDialog();
-            if (d != 0 && d != setting.RenewDate)
+            if (d != setting.RenewDate)
             {
                 setting.RenewDate = d;
                 provider.SetUserSetting(setting);
