@@ -32,8 +32,12 @@ namespace PocketBook
         {
             get
             {
-                return "今天是" + DateTime.Now.Year + "年" + DateTime.Now.Month + "月" + DateTime.Now.Day + "日, " +
-                        "您本月已消费" + GetSpentMoney().ToString() + "元, 平均每日剩余" + GetAvgLeftMoney().ToString("f2") + "元。";
+                var s = "今天是" + DateTime.Now.Year + "年" + DateTime.Now.Month + "月" + DateTime.Now.Day + "日, " +
+                        "您本月已消费" + GetSpentMoney().ToString() + "元, ";
+                var q = "平均每日剩余" + GetAvgLeftMoney().ToString("f2") + "元。";
+                var t = "已经超支!";
+                if (GetAvgLeftMoney() > 0) return s + q;
+                else return s + t;
             }
         }
         private float GetSpentMoney()
@@ -43,6 +47,15 @@ namespace PocketBook
         private float GetAvgLeftMoney()
         {
             return provider.GetAverageLeftOfCurrentMonth();
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var entry = await CustomDialog.ShowNewEntryDialog(provider.GetCatagories());
+            if (entry != null)
+            {
+                provider.AddDataEntry(entry);
+            }
         }
     }
 }

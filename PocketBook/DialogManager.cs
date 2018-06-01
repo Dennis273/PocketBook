@@ -56,6 +56,7 @@ namespace PocketBook
             {
                 combobox.Items.Add(option);
             }
+            combobox.SelectedIndex = 0;
             var panel = dialog.Content as StackPanel;
             panel.Children.Add(combobox);
             return this;
