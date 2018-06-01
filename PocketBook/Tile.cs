@@ -9,7 +9,8 @@ using System;
 namespace PocketBook
 {
     class Tile
-    {
+    {   
+        // 当日消费的磁贴
         public static void TileNotificate(float cost, float budget) {
 
             string source = "ms-appx:///Assets/blue.png";
@@ -55,10 +56,12 @@ namespace PocketBook
             TileUpdateManager.CreateTileUpdaterForApplication().Update(notification);
         }
 
+        // 当月消费的磁贴
         public static void TileNotificate(float cost, float budget, float percentage)
         {
 
             string source = "ms-appx:///Assets/";
+            // 根据当月消费占预算的比例设置背景颜色
             if (percentage < 0.5)
             {
                 source += "green.png";

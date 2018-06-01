@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PocketBook
-{
+{   
+    // 消费记录
     public class DataEntry
     {
         public float Money { get; set; }
@@ -25,6 +26,7 @@ namespace PocketBook
         }
     }
     
+    // 记录日消费
     public class DayData
     {
         public int Day;
@@ -36,6 +38,8 @@ namespace PocketBook
             Money = money;
         }
     }
+
+    // 记录月消费
     public class MonthData
     {
         public int Month;
@@ -48,6 +52,7 @@ namespace PocketBook
         }
     }
 
+    // 用户设置类
     public class UserSetting
     {
         public string Username;
