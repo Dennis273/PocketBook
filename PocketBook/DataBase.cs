@@ -15,6 +15,10 @@ namespace PocketBook
         private static String SQL_UPDATE = "UPDATE " + TABLE_NAME + " SET Day = ?, Month = ?, Year = ?, Money = ?, Catagory = ?, Comment = ?  WHERE Id = ?";
         private static String SQL_DELETE = "DELETE FROM " + TABLE_NAME + " WHERE Id = ?";
 
+        // 链接数据库
+        private static SQLiteConnection connection = new SQLiteConnection(DB_NAME);
+
+        // 初始化用户设置,在第一次使用时调用
         internal static void InitializeUserSetting()
         {
             using (var statement = connection.Prepare("INSERT INTO " + USER_SETTING_TABLE + " VALUES(?,?,?,?);"))
@@ -28,8 +32,7 @@ namespace PocketBook
            
         }
 
-        private static SQLiteConnection connection = new SQLiteConnection(DB_NAME);
-
+        // 初始化数据库, 创建DataEntry表和UserSetting表
         public static void InitializeDateBase()
         {
             using (var statement = connection.Prepare(SQL_CREATE_TABLE))
@@ -43,6 +46,9 @@ namespace PocketBook
             }
         }
 
+        // 将数据添加到数据库中
+        //
+        // 参数: 要添加的数据项
         public static void InsertEntry(DataEntry dataEntry)
         {
             using (var statement = connection.Prepare(SQL_INSERT))
@@ -58,6 +64,7 @@ namespace PocketBook
             }
         }
 
+        // 返回DataEntry的所有元组
         public static List<DataEntry> GetAllEntries()
         {
             List<DataEntry> entries = new List<DataEntry>();
@@ -77,6 +84,9 @@ namespace PocketBook
             return entries;
         }
 
+        // 更新数据
+        //
+        // 参数: 要更新的数据项
         public static void UpdateEntry(DataEntry dataEntry)
         {
             using (var statement = connection.Prepare(SQL_UPDATE))
@@ -92,6 +102,10 @@ namespace PocketBook
             }
         }
 
+
+        // 删除DataEntry中的元组
+        //
+        // 参数: 要删除的数据项的id
         public static void DeleteEntry(string id)
         {
             using (var statement = connection.Prepare(SQL_DELETE))
@@ -101,6 +115,7 @@ namespace PocketBook
             }
         }
 
+        // 返回用户设置
         public static UserSetting GetUserSetting()
         {
             UserSetting userSetting = new UserSetting();
@@ -110,6 +125,8 @@ namespace PocketBook
                 while (SQLiteResult.ROW == statement.Step())
                 {
                     var catagories = (string)statement["Catagories"];
+                    // 类别在数据库中存放形式:food;drink;
+                    // 因此需要将catagories转换成列表
                     var strs = catagories.Split(";", StringSplitOptions.RemoveEmptyEntries);
                     var temp = new List<string>(strs);
                     var username = (string)statement["Username"];
@@ -121,6 +138,8 @@ namespace PocketBook
             return userSetting;
         }
 
+
+        // 更新用户设置的类别
         public static void UpdateCatagory(string catagorys)
         {
             using (var statement = connection.Prepare(
@@ -131,6 +150,12 @@ namespace PocketBook
             }
         }
 
+
+        // 更新DataEntry中元组的类别就,在更改类别时调用
+        //
+        // 参数: 
+        //  oldCatagory: 需要更改的类别
+        //  newCatagory: 更改后的类别
         public static void UpdateEntryCatagory(string oldCatagory, string newCatagory)
         {
             using (var statement = connection.Prepare(
@@ -142,6 +167,9 @@ namespace PocketBook
             }
         }
 
+
+        // 更新用户设置
+        // 参数: 更新后的用户设置
         public static void UpdateUserSetting(UserSetting userSetting)
         {
             using (var statement = connection.Prepare(
@@ -154,6 +182,8 @@ namespace PocketBook
             }
         }
 
+
+        // 清空所有数据, 包括所有DataEntry元组和UserSetting
         internal static void __DeleteAllData()
         {
             using (var statement = connection.Prepare(
