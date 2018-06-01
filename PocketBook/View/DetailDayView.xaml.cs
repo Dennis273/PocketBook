@@ -32,7 +32,6 @@ namespace PocketBook
                 return $"{Date.Year}年{Date.Month}月{Date.Day}日";
             }
         }
-
         public DetailDayView()
         {
             InitializeComponent();

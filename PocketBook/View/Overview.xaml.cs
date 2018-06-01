@@ -33,7 +33,7 @@ namespace PocketBook
             get
             {
                 return "今天是" + DateTime.Now.Year + "年" + DateTime.Now.Month + "月" + DateTime.Now.Day + "日, " +
-                        "您本月已消费" + GetSpentMoney().ToString() + "元, 平均每日剩余" + GetAvgLeftMoney().ToString() + "元。";
+                        "您本月已消费" + GetSpentMoney().ToString() + "元, 平均每日剩余" + GetAvgLeftMoney().ToString("f2") + "元。";
             }
         }
         private float GetSpentMoney()

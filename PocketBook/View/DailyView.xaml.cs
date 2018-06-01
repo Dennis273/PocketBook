@@ -21,6 +21,7 @@ namespace PocketBook
     {
         DataProvider provider;
         List<DayData> DayList;
+        public List<string> analysis;
         public int Year;
         public int Month;
 
@@ -29,6 +30,7 @@ namespace PocketBook
             this.InitializeComponent();
             provider = DataProvider.GetDataProvider();
             DayList = new List<DayData>();
+            analysis = new List<string>();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -46,6 +48,13 @@ namespace PocketBook
                 data.Percentage = data.Money / sum;
                 DayList.Add(data);
             }
+            analysis.Clear();
+            var a = provider.GetPercentageAmongMonth(Year, Month);
+            foreach (var data in a)
+            {
+                analysis.Add($"{data.Key} : {data.Value.ToString("P2")}");
+            }
+
         }
 
         private void OnGridViewSizeChanged(object sender, SizeChangedEventArgs e)

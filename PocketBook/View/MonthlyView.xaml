@@ -51,6 +51,13 @@
                 </ScrollViewer>
             </PivotItem>
             <PivotItem Header="统计">
+                <ListView ItemsSource="{x:Bind analysis}" HorizontalAlignment="Stretch" Margin="0, 20, 0, 0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="x:String">
+                            <TextBlock Text="{x:Bind}" FontSize="24" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </PivotItem>
         </Pivot>
     </Grid>

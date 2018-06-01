@@ -24,12 +24,14 @@ namespace PocketBook
     {
         DataProvider provider;
         List<MonthData> MonthList;
+        List<string> analysis;
         public int Year;
         public MonthlyView()
         {
             InitializeComponent();
             provider = DataProvider.GetDataProvider();
             MonthList = new List<MonthData>();
+            analysis = new List<string>();
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -41,6 +43,8 @@ namespace PocketBook
             {
                 MonthList.Add(data);
             }
+            analysis.Clear();
+            
         }
         private void OnGridViewSizeChanged(object sender, SizeChangedEventArgs e)
         {

@@ -9,12 +9,12 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="10, 10, 10, 10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="8*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="0">
             <StackPanel Margin="60, 20, 60, 20">
-                <TextBlock Text="{x:Bind Summary, Mode=OneWay}" FontSize="48" TextWrapping="Wrap"/>
+                <TextBlock Text="{x:Bind Summary, Mode=OneWay}" FontSize="36" TextWrapping="Wrap"/>
             </StackPanel>
         </Grid>
         
