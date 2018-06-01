@@ -105,7 +105,7 @@ namespace PocketBook
         private async void GetInputBudget()
         {
             var b = await CustomDialog.ShowBudgetDialog();
-            if (b != -1)
+            if (b > 0)
             {
                 setting.Budget = b;
                 provider.SetUserSetting(setting);

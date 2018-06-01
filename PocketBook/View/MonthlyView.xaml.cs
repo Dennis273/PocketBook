@@ -24,7 +24,7 @@ namespace PocketBook
     {
         DataProvider provider;
         List<MonthData> MonthList;
-        List<string> analysis;
+        public List<string> analysis;
         public int Year;
         public MonthlyView()
         {
@@ -44,7 +44,10 @@ namespace PocketBook
                 MonthList.Add(data);
             }
             analysis.Clear();
-            
+            foreach (var data in provider.GetPercentageAmongYear(Year))
+            {
+                analysis.Add($"{data.Key} : {data.Value.ToString("P2")}");
+            }
         }
         private void OnGridViewSizeChanged(object sender, SizeChangedEventArgs e)
         {
