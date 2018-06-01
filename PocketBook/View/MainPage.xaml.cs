@@ -28,8 +28,6 @@ namespace PocketBook
         {
             this.InitializeComponent();
         }
-
-
         private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
             var view = sender as NavigationView;

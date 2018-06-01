@@ -105,9 +105,17 @@ namespace PocketBook
             var k = list[2] as ComboBox;
             var m = list[3] as TextBox;
             if (t == null || j == null || k == null || m == null) return null;
-            var a =  new DataEntry(float.Parse(t.Text), j.Date.Date, (string)k.SelectedValue);
-            a.Comment = m.Text;
-            return a;
+            try
+            {
+                var a = new DataEntry(float.Parse(t.Text), j.Date.Date, (string)k.SelectedValue);
+                a.Comment = m.Text;
+                return a;
+            }
+            catch (FormatException e)
+            {
+                return null;
+            }
+   
         }
         public static async Task<bool> ShowConfirmDialog(string message = "您确定要执行此操作？", string description = "")
         {
