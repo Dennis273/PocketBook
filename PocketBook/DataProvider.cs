@@ -35,6 +35,7 @@ namespace PocketBook
                 DataBase.InitializeDateBase();
                 FetchData();
                 DataChanged += UpdataTodayAndCurrentMonth;
+                GetPercentageAmongMonth(2018, 5);
             }
             catch (Exception e)
             {
@@ -259,9 +260,10 @@ namespace PocketBook
                     totalMoney += entry.Money;
                 }
             }
-            foreach (var item in map)
+            List<string> keys = new List<string>(map.Keys);
+            for (var i = 0; i < map.Count; i++)
             {
-                map[item.Key] = item.Value / totalMoney;
+                map[keys[i]] = totalMoney == 0 ? 0 : map[keys[i]] / totalMoney;
             }
             return map;
         }
@@ -285,9 +287,10 @@ namespace PocketBook
                     totalMoney += entry.Money;
                 }
             }
-            foreach (var item in map)
+            List<string> keys = new List<string>(map.Keys);
+            for (var i = 0; i < map.Count; i++)
             {
-                map[item.Key] = item.Value / totalMoney;
+                map[keys[i]] = totalMoney == 0 ? 0 : map[keys[i]] / totalMoney;
             }
             return map;
         }

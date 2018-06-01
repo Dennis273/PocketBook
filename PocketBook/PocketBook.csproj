@@ -133,6 +133,7 @@
   <ItemGroup>
     <Content Include="Assets\blue.png" />
     <Content Include="Assets\green.png" />
+    <Content Include="Assets\logo.png" />
     <Content Include="Assets\orange.png" />
     <Content Include="Assets\red.png" />
     <Content Include="Properties\Default.rd.xml" />
