@@ -33,7 +33,7 @@ namespace PocketBook
             currentMonth.Money = 0;
             foreach (DataEntry entry in dataEntries)
             {
-                if (entry.SpendDate.CompareTo(endTime) == -1 && entry.SpendDate.CompareTo(startTime) == 1)
+                if (entry.SpendDate.CompareTo(endTime) == -1 && entry.SpendDate.CompareTo(startTime) != -1)
                 {
                     currentMonth.Money += entry.Money;
                 }
@@ -44,7 +44,10 @@ namespace PocketBook
         {
             // 返回剩余每日
             // （预算 - 已花费）/ 剩余日期
-            return 0;
+            var endTime = new DateTime(DateTime.Now.Year, currentMonth.Month, userSetting.RenewDate);
+            if (DateTime.Now.Day >= userSetting.RenewDate) endTime = endTime.AddMonths(1);
+            return (userSetting.Budget - currentMonth.Money) / (endTime.Subtract(DateTime.Now).Days + 1);
+            
         }
 
         private void UpdataTodayAndCurrentMonth(DataOperation dataOperation, DataEntry dataEntry)
@@ -52,7 +55,7 @@ namespace PocketBook
             var endTime = new DateTime(DateTime.Now.Year, currentMonth.Month, userSetting.RenewDate);
             if (DateTime.Now.Day >= userSetting.RenewDate) endTime = endTime.AddMonths(1);
             var startTime = endTime.AddMonths(-1);
-            if (dataEntry.SpendDate.CompareTo(endTime) == -1 && dataEntry.SpendDate.CompareTo(startTime) == 1)
+            if (dataEntry.SpendDate.CompareTo(endTime) == -1 && dataEntry.SpendDate.CompareTo(startTime) != -1)
             {
                if (dataOperation == DataOperation.Add)
                 {
@@ -291,7 +294,11 @@ namespace PocketBook
             {
                 DataBase.UpdateUserSetting(userSetting);
                 this.userSetting.Username = userSetting.Username;
-                this.userSetting.RenewDate = userSetting.RenewDate;
+                if (this.userSetting.RenewDate != userSetting.RenewDate)
+                {
+                    this.userSetting.RenewDate = userSetting.RenewDate;
+                    FetchCurrentMonth();
+                }         
                 this.userSetting.Budget = userSetting.Budget;
             }
             catch (Exception e)

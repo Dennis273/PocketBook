@@ -164,10 +164,10 @@ namespace PocketBook
             using (var statement = connection.Prepare(
              "UPDATE " + USER_SETTING_TABLE + " SET Username = ?, RenewDate = ?, Budget = ?, Catagories = ?"))
             {
-                statement.Bind(1, "未命名");
+                statement.Bind(1, "用户");
                 statement.Bind(2, 1);
                 statement.Bind(3, 1);
-                statement.Bind(4, "未定义");
+                statement.Bind(4, "其他");
                 statement.Step();
             }
 
