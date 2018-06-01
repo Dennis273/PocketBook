@@ -44,10 +44,10 @@ namespace PocketBook
         }
         private void OnGridViewSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            // Here I'm calculating the number of columns I want based on
-            // the width of the page
-            var columns = Math.Ceiling(ActualWidth / 300);
+
+            var columns = 4;
             ((ItemsWrapGrid)gridView.ItemsPanelRoot).ItemWidth = e.NewSize.Width / columns;
+            ((ItemsWrapGrid)gridView.ItemsPanelRoot).ItemHeight = e.NewSize.Width / columns;
         }
 
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)

@@ -23,12 +23,14 @@ namespace PocketBook
         List<DayData> DayList;
         public int Year;
         public int Month;
+
         public DailyView()
         {
             this.InitializeComponent();
             provider = DataProvider.GetDataProvider();
             DayList = new List<DayData>();
         }
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -37,17 +39,22 @@ namespace PocketBook
             Month = arg[1];
             DayList.Clear();
             datePicker.Date = new DateTime(Year, Month, 1);
+            float sum = 0;
+            provider.GetDayDataOfMonth(Year, Month).ForEach(data => sum += data.Money);
             foreach (var data in provider.GetDayDataOfMonth(Year, Month))
             {
+                data.Percentage = data.Money / sum;
                 DayList.Add(data);
             }
         }
+
         private void OnGridViewSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            // Here I'm calculating the number of columns I want based on
-            // the width of the page
-            var columns = Math.Ceiling(ActualWidth / 300);
+
+            //var columns = Math.Ceiling(e.NewSize.Width / 100);
+            var columns = 7;
             ((ItemsWrapGrid)gridView.ItemsPanelRoot).ItemWidth = e.NewSize.Width / columns;
+            ((ItemsWrapGrid)gridView.ItemsPanelRoot).ItemHeight = e.NewSize.Width / columns;
         }
 
         private void GridView_ItemClick(object sender, ItemClickEventArgs e)
